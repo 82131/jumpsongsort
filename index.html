@@ -98,7 +98,7 @@
     @media (min-width: 500px) { .category-items { grid-template-columns: repeat(3, 1fr); } }
     .category-items label { cursor: pointer; color: #555; }
 
-/* 予選用スタイル */
+    /* 予選用スタイル */
     #prelim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
     .prelim-item {
         border: 2px solid #eee; padding: 15px 10px; border-radius: 8px;
@@ -106,7 +106,7 @@
         display: flex; align-items: center; justify-content: center; min-height: 50px; font-size: 14px; color: #555;
     }
     .prelim-item.selected {
-        border-color: var(--theme-color); background-color: var(--theme-light); color: #5d4037; /* ★太字になる処理を削除 */
+        border-color: var(--theme-color); background-color: var(--theme-light); color: #5d4037; 
     }
     
     .counter-box { 
@@ -117,49 +117,85 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
 
-    /* ★本戦用スタイル（引き分けを下に配置し、左右ボタンを最大化） */
+    /* ★本戦用スタイル（横並び固定・文字サイズ最適化） */
     #battle-container {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2列に変更 */
-        gap: 10px; /* 隙間を狭く */
+        grid-template-columns: 1fr 60px 1fr; /* 左・引き分け(60px)・右 に固定 */
+        gap: 8px;
         width: 100%;
         margin: 20px 0;
+        align-items: center; /* 高さを揃える */
     }
     .battle-btn {
         border: 4px solid var(--theme-color); 
         background: #fff;
         border-radius: 12px;
-        padding: 10px;
+        padding: 5px;
         cursor: pointer;
-        font-size: clamp(14px, 4vw, 18px); 
+        /* 文字が長くても一行に収まりやすいように調整 */
+        font-size: clamp(12px, 3.5vw, 16px); 
         font-weight: bold;
-        color: #333;
+        color: #5d4037;
         display: flex;
         align-items: center;
         justify-content: center;
-        word-break: break-word; 
+        word-break: keep-all; /* 変なところで改行させない */
+        overflow-wrap: break-word;
         box-shadow: 0 4px 8px rgba(0,0,0,0.06); 
         transition: 0.2s;
-        min-height: 120px; 
+        height: 130px; /* ★ボタンの高さを固定 */
     }
     .battle-btn:hover { background: var(--theme-color); transform: scale(1.02); }
-    .middle-col { 
-        grid-column: span 2; /* 2列分ぶち抜いて下に配置 */
-        display: flex; align-items: center; justify-content: center; 
-        margin-top: 5px;
-    }
+    
+    .middle-col { display: flex; align-items: center; justify-content: center; height: 100%; }
     .middle-btn { 
-        border: 1px solid #ddd; padding: 12px; cursor: pointer; width: 60%; 
-        background: #f9f9f9; font-size: 14px; border-radius: 8px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        border: 1px solid #ddd; padding: 10px 0; cursor: pointer; width: 100%; height: 80px; 
+        display: flex; align-items: center; justify-content: center;
+        background: #f9f9f9; font-size: 11px; border-radius: 8px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
     .middle-btn:hover { background: #eee; }
 
-    /* 結果テーブル（2列用に調整） */
-    #capture-area { background: #fff; padding: 20px; margin-bottom: 20px; }
-    .result-table { width: 100%; margin: 0 auto; border-collapse: collapse; font-size: 11px; } /* スマホ向けに文字を小さく */
-    @media (min-width: 500px) { .result-table { font-size: 14px; } }
-    .result-table th, .result-table td { border: 1px solid #ccc; padding: 6px 4px; color: #444; word-break: break-word; }
-    .result-table th { background-color: var(--theme-color); color: #333; }
+    /* ★新しいランキングスタイル（音楽アプリ風） */
+    #capture-area { background: #fff; padding: 20px 10px; margin-bottom: 20px; border-radius: 8px; }
+    .ranking-list {
+        display: grid;
+        grid-template-columns: 1fr; /* スマホでは縦1列で見やすく */
+        gap: 10px;
+        margin-top: 15px;
+        text-align: left;
+    }
+    @media (min-width: 500px) { .ranking-list { grid-template-columns: 1fr 1fr; } /* PCなら2列 */ }
+    
+    .rank-item {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 2px solid var(--theme-color);
+        border-radius: 10px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .rank-num {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        background: var(--theme-color);
+        border-radius: 50%;
+        min-width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        -webkit-text-stroke: 0; /* 縁取りを消してスッキリ */
+        text-shadow: none;
+    }
+    .rank-song {
+        font-size: 14px;
+        font-weight: bold;
+        color: #5d4037;
+        word-break: break-word;
+    }
 </style>
 </head>
 <body>
@@ -177,7 +213,6 @@
         </p>
         
         <div class="oshi-grid">
-            <!-- ご指定のパステルカラーに変更 -->
             <button class="oshi-btn" style="background:#ffd1d1;" onclick="selectOshi('#ffd1d1', '#fff5f5', '山田涼介')">山田 涼介</button>
             <button class="oshi-btn" style="background:#ffd1ff;" onclick="selectOshi('#ffd1ff', '#fff5ff', '知念侑李')">知念 侑李</button>
             <button class="oshi-btn" style="background:#ffe8d1;" onclick="selectOshi('#ffe8d1', '#fffaf5', '有岡大貴')">有岡 大貴</button>
@@ -185,7 +220,6 @@
             <button class="oshi-btn" style="background:#d1e8ff;" onclick="selectOshi('#d1e8ff', '#f5f9ff', '伊野尾慧')">伊野尾 慧</button>
             <button class="oshi-btn" style="background:#ffffd1;" onclick="selectOshi('#ffffd1', '#fffff5', '八乙女光')">八乙女 光</button>
             <button class="oshi-btn" style="background:#e8ffd1;" onclick="selectOshi('#e8ffd1', '#f8fff5', '薮宏太')">薮 宏太</button>
-            <!-- 非選択 -->
             <button class="oshi-btn" style="background:#ffffff;" onclick="selectOshi('#e0e0e0', '#f5f5f5', '非選択')">選べない</button>
         </div>
 
@@ -228,7 +262,6 @@
         <h2>③本戦：より好きな方を選んでください</h2>
         <div id="battleNumber" style="font-size: 14px; color: #888; margin-bottom: 10px;"></div>
         
-        <!-- ★テーブルを廃止し、独立した大きなボタンのレイアウトに変更 -->
         <div id="battle-container">
             <div id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></div>
             
@@ -245,7 +278,8 @@
     <!-- ==================== ④結果ステップ ==================== -->
     <div id="step-result" class="step-section">
         <div id="capture-area">
-            <h2>最終結果（TOP20）</h2>
+            <!-- ★タイトルを変更しました -->
+            <h2>Hey!Say!JUMP好き曲20選</h2>
             <div id="resultField"></div>
         </div>
         <div style="margin-top: 20px;">
@@ -257,15 +291,12 @@
 </div>
 
 <script>
-// ==========================================
-// 同意・メンカラ・担当記録の変数
-// ==========================================
 var isConsentGiven = false;
-var selectedOshiName = ""; // 選んだ担当を記憶する箱
+var selectedOshiName = ""; 
 
 function selectOshi(mainColor, lightColor, oshiName) {
     isConsentGiven = true; 
-    selectedOshiName = oshiName; // 担当を記憶
+    selectedOshiName = oshiName; 
     document.documentElement.style.setProperty('--theme-color', mainColor);
     document.documentElement.style.setProperty('--theme-light', lightColor);
     showStep('step-setup');
@@ -279,9 +310,6 @@ function skipConsent() {
     showStep('step-setup');
 }
 
-// ==========================================
-// データの定義
-// ==========================================
 var namMemberSeries = {};
 var seriesList = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"];
 var seriesTitle = [
@@ -297,22 +325,14 @@ var seriesCategories = [
     { name: "ソロ・ユニット", ids: ["18","19","20","21"] }
 ];
 
-// ★★★ 曲リスト ★★★
-
-// =======================================
-// シングル
-// =======================================
+// 曲リスト
 namMemberSeries["1"] = [
-    "Ultra Music Power", "Star Time", "Too Shy", 
-    "Dreams come true", "俺たちの青春", "Chance to Change", 
-    "Your Seed", "冒険ライダー", 
-    "真夜中のシャドーボーイ", "スクール革命", "Deep night 君思う", 
-    "瞳のスクリーン", "輝きデイズ", "Romeo & Juliet", 
-    "「ありがとう」～世界のどこにいても～", "FLY", "スノウソング", "二人掛けの場所", 
+    "Ultra Music Power", "Star Time", "Too Shy", "Dreams come true", "俺たちの青春", "Chance to Change", 
+    "Your Seed", "冒険ライダー", "真夜中のシャドーボーイ", "スクール革命", "Deep night 君思う", 
+    "瞳のスクリーン", "輝きデイズ", "Romeo & Juliet", "「ありがとう」～世界のどこにいても～", "FLY", "スノウソング", "二人掛けの場所", 
     "OVER", "愛ing-アイシテル", "ユー・ガッタ・モール", "Screw", "Born in the EARTH", 
     "Magic Power", "Beat Line", "眠リノ森", "BE ALIVE", "スクールデイズ", "GET!!"
 ];
-
 namMemberSeries["2"] = [
     "SUPER DELICATE", "JUMP Around The World!!!", "succeed", "ワンダーランド･トレイン", "ス･リ･ル", 
     "Come On A My House", "BOUNCE", "New Hope ～こんなに僕らはひとつ", "Just For You", "スクランブル", 
@@ -326,7 +346,6 @@ namMemberSeries["2"] = [
     "Give Me Love", "Traffic Jam", "TOY", "Baby I Love You", "Glorious", "明日ハレルヤ", 
     "殺せんせーションズ", "さよならセンセーション"
 ];
-
 namMemberSeries["3"] = [
     "OVER THE TOP", "Vanilla Ice", "Funky Time", "PARTY!!", "Our days", 
     "Precious Girl", "Are You There?", "灼熱の夢", "Smile in Summer", "Sweet Liar", "スタートデイズ", 
@@ -343,17 +362,12 @@ namMemberSeries["3"] = [
     "群青ランナウェイ", "Lovely Dance", "シャッターチャンス", "ドラマチック", "Love Your Life", 
     "Sing-along", "Break The Wall", "モノローグ", "ハローメロディ", "ASAP!"
 ];
-
 namMemberSeries["4"] = [
     "a r e a", "恋をするんだ", "春玄鳥", "Happy！Birthdaaaaaaaay", "ウィークエンダー（Torikae Mix）", "TO THE TOP（Torikae Mix）", "僕はVampire（Torikae Mix）", 
     "DEAR MY LOVER", "ウラオモテ", "エーデルワイス", "VILLAIN", "Sweet Chilli Sauce", "あの日の僕へ", 
     "UMP", "NERD", "BAD NEWS 見たくない！", "執事的なボーイフレンド", "ハイライト", "ナユタの海", "ルーティーン", 
     "encore", "SUPER CRUISIN'", "Step by step", "未来線", "ラブレター", "MATSURI☆FEVER", "ハニカミ", "traveler", "赤裸々", "ハートビート", "NEED YOU", "CUE CUE CUTE"
 ];
-
-// =======================================
-// アルバム
-// =======================================
 namMemberSeries["5"] = ["DREAMER", "INFINITY", "瞳のスクリーン", "真紅", "ガンバレッツゴー！", "情熱JUMP", "すまいるそんぐ", "Memories", "Dreams come true", "Time", "Score", "アイ☆スクリーム", "Your Seed", "真夜中のシャドーボーイ", "Dash!!", "Ultra Music Power", "Thank You ～僕たちから君へ～"];
 namMemberSeries["6"] = ["パーフェクト ライフ", "SUPER DELICATE", "つなぐ手と手", "僕はVampire","OVER", "Hero", "Magic Power", "Hurry up!", "サム＆ピンキー", "「ありがとう」～世界のどこにいても～", "Together forever", "スパイシー", "花えがお", "スナップ", "ウタウタウ", "Endless Dream"];
 namMemberSeries["7"] = ["～Prelude of smart～（smart）", "FOREVER", "Ready Go", "Come On A My House", "切なさ、ひきかえに", "Candle", "パステル", "ゆーと叩いてみた。", "コンパスローズ", "Come Back…?", "RELOAD", "はじまりのメロディ", "Aino Arika", "My World", "ともだちだよ", "Yes!", "Super Super Night", "Oh!アイドル!", "Ride With Me"];
@@ -367,21 +381,14 @@ namMemberSeries["14"] = ["MASTERPIECE", "サンダーソニア", "業務☆ス�
 namMemberSeries["15"] = ["Ready to Jump", "だいすきなきみへ", "それぞれ。", "Dirty Innocence", "ときめくあなた", "そっと鏡にキスをした", "Tiki Don", "まだ切らない", "あの日の夢を見させてよ", "キミノミカタ", "PULL UP", "Evans Knot", "please, 'Q'uickly!", "DEAR MY LOVER", "ウラオモテ"];
 namMemberSeries["16"] = ["She's Amazing", "Donkey Gongs", "シアティカ", "Never end...", "DARK HERO", "また、あした", "eek!!", "最後の涙", "リズム", "Cheer!", "UMP", "NERD"];
 namMemberSeries["17"] = ["S say -Sinfonia-", "GHOST", "Symphony", "RUN THIS WORLD", "Scale It Up", "cowboy", "君だけの1ページ", "Serenity", "メロリ", "劇的LOVE", "encore"];
-
-// =======================================
-// ソロ・ユニット
-// =======================================
 namMemberSeries["18"] = ["ガンバレッツゴー！", "ユー・ガッタ・モール", "GET!!", "ワンダーランド･トレイン", "ウタウタウ", "花えがお", "Just For You", "Oh！My Jelly！～僕らはOK～", "ただ前へ", "KAZEKAORU", "パーリーモンスター", "Sweet Liar", "やんちゃなヒーロー", "Virtual Butterfly", "あの日の僕へ", "輝きデイズ", "脳内☆Dance"];
 namMemberSeries["19"] = ["Score", "Screw", "スクールデイズ", "ス･リ･ル", "スパイシー", "スナップ", "スクランブル", "スギルセツナ", "スーツデイズ", "スルー", "Speed It Up", "スタートデイズ", "スンダDance", "Sweet Chilli Sauce"];
 namMemberSeries["20"] = ["俺たちの青春", "Do it again", "159", "Waiting for the rain", "条件反射", "Bubble Gum", "題名の無い物語", "PINK", "流星の詩", "Oh! my darling"];
 namMemberSeries["21"] = ["Yes!", "Super Super Night", "Oh!アイドル!", "UNION", "ペットショップラブモーション", "3月14日～時計", "今夜貴方を口説きます", "Mr.Flawless", "僕とけいと", "My Girl", "Mystery O", "トレンディーラブ #REIWA", "Napa Napa", "Go Fighter", "Are You There?"];
 
-// ==========================================
-// 初期化・予選の処理
-// ==========================================
 var candidateSongs = [], prelimBlocks = [], currentBlockIdx = 0;
 var selectedInBlock = [], survivingSongs = [];
-var blockSelections = []; // ★予選の戻る機能用
+var blockSelections = []; 
 const MIN_REQUIRED_SONGS = 8;
 
 window.onload = function() {
@@ -392,7 +399,7 @@ window.onload = function() {
         for (var i = 0; i < cat.ids.length; i++) {
             var idx = seriesList.indexOf(cat.ids[i]);
             if(idx !== -1) {
-                var checked = ""; // ★自動チェックを解除
+                var checked = ""; 
                 cbHTML += `<label><input type="checkbox" name="s1" value="${seriesList[idx]}" ${checked}> ${seriesTitle[idx]}</label>`;
             }
         }
@@ -464,17 +471,13 @@ function nextPrelim() {
     }
 }
 
-// ★一つ戻る機能（予選用）
 function prevPrelim() {
     if (currentBlockIdx > 0) { currentBlockIdx--; renderPrelimBlock(); }
 }
 
-// ==========================================
-// 本戦（マージソート）の処理
-// ==========================================
 var namMember = [], lstMember = [], parent = [], equal = [], rec = [];
 var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag;
-var sortHistory = []; // ★本戦の戻る機能用
+var sortHistory = []; 
 
 function startMainSort() {
     namMember = survivingSongs.slice(); namMember.shuffle();
@@ -487,7 +490,6 @@ function startMainSort() {
 }
 
 function sortList(flag){
-    // ★ボタンを押した瞬間の状態を保存（戻る機能のため）
     sortHistory.push({
         lstMember: JSON.parse(JSON.stringify(lstMember)), parent: parent.slice(), equal: equal.slice(), rec: rec.slice(),
         cmp1: cmp1, cmp2: cmp2, head1: head1, head2: head2, nrec: nrec, numQuestion: numQuestion, finishSize: finishSize, finishFlag: finishFlag
@@ -504,7 +506,6 @@ function sortList(flag){
     if (cmp1<0) { showResult(); finishFlag = 1; } else { showImage(); }
 }
 
-// ★一つ戻る機能（本戦用）
 function undoSort() {
     if (sortHistory.length === 0) return;
     var state = sortHistory.pop();
@@ -523,48 +524,32 @@ function showImage() {
 
 function showResult() {
     showStep("step-result");
-    var str = "<table class='result-table'><tr><th style='width:35px;'>順位</th><th>曲名</th><th style='width:35px;'>順位</th><th>曲名</th></tr>";
+    var str = "<div class='ranking-list'>";
     var top10Songs = [];
-    
-    // ① まず順位データを整理する
-    var rankList = [];
     var ranking = 1, sameRank = 1;
+    
+    // ★表(table)ではなく、可愛いバッジ付きのリスト(div)を生成する
     for (var i = 0; i < namMember.length; i++) {
         if (ranking > 20) break;
-        rankList.push({ rank: ranking, name: namMember[lstMember[0][i]] });
+        var songName = namMember[lstMember[0][i]];
+        
+        str += `<div class="rank-item">
+                    <div class="rank-num">${ranking}</div>
+                    <div class="rank-song">${songName}</div>
+                </div>`;
+                
+        if (top10Songs.length < 10) { top10Songs.push(songName); }
+        
         if (i < namMember.length - 1) { 
             if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++; 
             else { ranking += sameRank; sameRank = 1; } 
         }
     }
-    
-    // ② フォーム送信用にTop10を抽出
-    for(var i = 0; i < 10; i++) {
-        top10Songs.push(rankList[i] ? rankList[i].name : "データなし");
-    }
-
-    // ③ 左右2列（1~10位 と 11~20位）でテーブルを作成
-    for (var i = 0; i < 10; i++) {
-        str += "<tr>";
-        // 左列（1〜10位）
-        if (rankList[i]) {
-            str += "<td style='text-align:center; font-weight:bold;'>" + rankList[i].rank + "</td><td>" + rankList[i].name + "</td>";
-        } else {
-            str += "<td></td><td></td>";
-        }
-        // 右列（11〜20位）
-        if (rankList[i + 10]) {
-            str += "<td style='text-align:center; font-weight:bold;'>" + rankList[i + 10].rank + "</td><td>" + rankList[i + 10].name + "</td>";
-        } else {
-            str += "<td></td><td></td>";
-        }
-        str += "</tr>";
-    }
-    str += "</table>";
+    str += "</div>";
     document.getElementById("resultField").innerHTML = str;
 
-    // ★同意した場合のみ、自動で送信処理を行う
     if(isConsentGiven) {
+        while(top10Songs.length < 10) { top10Songs.push("データなし"); }
         var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe2ftmvqTI6eGHKEXG3bUnAmYYXrM5O8ctekXqLbmamZB3uhg/formResponse';
         var formData = new FormData();
         formData.append('entry.1121843297', top10Songs[0]); 
@@ -588,16 +573,14 @@ function downloadImage() {
     html2canvas(element, { scale: 2 }).then(canvas => {
         var imgData = canvas.toDataURL("image/png");
         
-        // PC用の自動ダウンロード処理
         var link = document.createElement("a"); 
         link.download = "JUMP_sort_result.png";
         link.href = imgData; 
         link.click();
         
-        // スマホ用に画面にも画像を表示して長押し保存を促す
         document.getElementById("capture-area").innerHTML = `
             <p style="color:#e57373; font-weight:bold; font-size:14px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
-                📸 スマホの方は、下の画像を長押しして「画像を保存」してください！
+                スマホの方は、下の画像を長押しして「画像を保存」してください！
             </p>
             <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
         `;
