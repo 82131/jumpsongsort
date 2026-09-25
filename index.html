@@ -1,0 +1,983 @@
+{\rtf1\ansi\ansicpg932\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset128 HiraginoSans-W3;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww30040\viewh16540\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="ja">\
+<head>\
+<meta charset="UTF-8">\
+<meta name="viewport" content="width=device-width, initial-scale=1.0">\
+<title>Hey!Say!JUMP
+\f1 \'8a\'79\'8b\'c8\'83\'5c\'81\'5b\'83\'67\'81\'69\'97\'5c\'91\'49\'81\'a8\'96\'7b\'90\'ed\'81\'6a
+\f0 </title>\
+<style>\
+    /* 
+\f1 \'91\'53\'91\'cc\'82\'cc\'83\'58\'83\'5e\'83\'43\'83\'8b
+\f0  */\
+    body \{\
+        font-family: '
+\f1 \'83\'81\'83\'43\'83\'8a\'83\'49
+\f0 ', sans-serif;\
+        text-align: center;\
+        color: #333;\
+        background-color: #fafafa;\
+        margin: 0;\
+        padding: 20px;\
+    \}\
+    .container \{\
+        max-width: 650px;\
+        margin: 0 auto;\
+        background: #fff;\
+        padding: 20px;\
+        border-radius: 8px;\
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);\
+    \}\
+    /* 
+\f1 \'8a\'65\'83\'58\'83\'65\'83\'62\'83\'76\'82\'cc\'95\'5c\'8e\'a6\'90\'d8\'82\'e8\'91\'d6\'82\'a6\'97\'70
+\f0  */\
+    .step-section \{ display: none; \}\
+    .step-section.active \{ display: block; \}\
+    \
+    h2 \{ font-size: 18px; color: #555; border-bottom: 2px solid #ccc; padding-bottom: 5px; \}\
+    .btn \{\
+        padding: 10px 20px; font-size: 16px; font-weight: bold;\
+        background-color: #ff6b6b; color: white; border: none;\
+        border-radius: 5px; cursor: pointer; margin-top: 15px;\
+    \}\
+    .btn:hover \{ background-color: #ff4c4c; \}\
+\
+    /* 
+\f1 \'97\'5c\'91\'49\'97\'70\'83\'58\'83\'5e\'83\'43\'83\'8b
+\f0  */\
+    #prelim-grid \{\
+        display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;\
+    \}\
+    .prelim-item \{\
+        border: 2px solid #ddd; padding: 20px 10px; border-radius: 8px;\
+        cursor: pointer; transition: 0.2s; background-color: #f9f9f9;\
+        display: flex; align-items: center; justify-content: center; min-height: 60px;\
+    \}\
+    .prelim-item.selected \{\
+        border-color: #ff6b6b; background-color: #ffe8e8; font-weight: bold;\
+    \}\
+    .prelim-status \{ margin-top: 15px; font-size: 14px; color: #666; \}\
+\
+    /* 
+\f1 \'96\'7b\'90\'ed\'97\'70\'83\'58\'83\'5e\'83\'43\'83\'8b\'81\'69\'8c\'b3\'83\'54\'83\'43\'83\'67\'82\'cc\'83\'66\'83\'55\'83\'43\'83\'93\'82\'f0\'93\'a5\'8f\'50\'81\'6a
+\f0  */\
+    #mainTable \{\
+        width: 100%; max-width: 500px; margin: 20px auto; border-collapse: separate; border-spacing: 5px;\
+    \}\
+    .battle-btn \{\
+        border: 2px solid #808080; padding: 20px; cursor: pointer;\
+        width: 40%; background: #fff; border-radius: 5px; min-height: 80px;\
+    \}\
+    .battle-btn:hover \{ background: #f0f0f0; \}\
+    .middle-btn \{\
+        border: 1px solid #c8c8c8; padding: 10px; cursor: pointer;\
+        width: 20%; background: #fff; font-size: 12px; border-radius: 5px;\
+    \}\
+\
+    /* 
+\f1 \'8c\'8b\'89\'ca\'83\'65\'81\'5b\'83\'75\'83\'8b
+\f0  */\
+    .result-table \{\
+        width: 80%; margin: 20px auto; border-collapse: collapse; font-size: 14px;\
+    \}\
+    .result-table th, .result-table td \{ border: 1px solid #808080; padding: 5px; \}\
+    .result-table th \{ background-color: #808080; color: #fff; \}\
+</style>\
+</head>\
+<body>\
+\
+<div class="container">\
+    <h1>Hey!Say!JUMP
+\f1 \'8a\'79\'8b\'c8\'83\'5c\'81\'5b\'83\'67
+\f0 </h1>\
+    \
+    <!-- ==================== 
+\f1 \'87\'40\'94\'4e\'91\'e3\'91\'49\'91\'f0\'83\'58\'83\'65\'83\'62\'83\'76
+\f0  ==================== -->\
+    <div id="step-setup" class="step-section active">\
+        <h2>
+\f1 \'87\'40\'97\'56\'82\'d1\'82\'bd\'82\'a2\'94\'4e\'91\'e3\'82\'f0\'91\'49\'91\'f0\'82\'b5\'82\'c4\'83\'58\'83\'5e\'81\'5b\'83\'67
+\f0 </h2>\
+        <div id="series-checkboxes" style="text-align: left; padding: 0 20px;">\
+            <!-- JS
+\f1 \'82\'c5\'83\'60\'83\'46\'83\'62\'83\'4e\'83\'7b\'83\'62\'83\'4e\'83\'58\'82\'f0\'90\'b6\'90\'ac\'82\'b5\'82\'dc\'82\'b7
+\f0  -->\
+        </div>\
+        <button class="btn" onclick="startPreliminary()">
+\f1 \'97\'5c\'91\'49\'83\'58\'83\'5e\'81\'5b\'83\'67\'81\'49
+\f0 </button>\
+    </div>\
+\
+    <!-- ==================== 
+\f1 \'87\'41\'97\'5c\'91\'49\'83\'58\'83\'65\'83\'62\'83\'76
+\f0  ==================== -->\
+    <div id="step-preliminary" class="step-section">\
+        <h2>
+\f1 \'87\'41\'97\'5c\'91\'49\'81\'46
+\f0 4
+\f1 \'8b\'c8\'82\'cc\'92\'86\'82\'a9\'82\'e7\'81\'79\'8d\'c5\'91\'e5
+\f0 3
+\f1 \'8b\'c8\'81\'7a\'82\'f0\'91\'49\'82\'f1\'82\'c5\'82\'ad\'82\'be\'82\'b3\'82\'a2
+\f0 </h2>\
+        <p style="font-size:12px; color:#666;">
+\f1 \'81\'69\'92\'6d\'82\'e7\'82\'c8\'82\'a2\'8b\'c8\'82\'ce\'82\'a9\'82\'e8\'82\'c8\'82\'e7
+\f0 0
+\f1 \'8b\'c8\'82\'c5\'82\'e0
+\f0 OK
+\f1 \'82\'c5\'82\'b7\'81\'6a
+\f0 </p>\
+        \
+        <div id="prelim-grid">\
+            <div class="prelim-item" onclick="togglePrelim(0)" id="p-item-0">
+\f1 \'8b\'c8
+\f0 1</div>\
+            <div class="prelim-item" onclick="togglePrelim(1)" id="p-item-1">
+\f1 \'8b\'c8
+\f0 2</div>\
+            <div class="prelim-item" onclick="togglePrelim(2)" id="p-item-2">
+\f1 \'8b\'c8
+\f0 3</div>\
+            <div class="prelim-item" onclick="togglePrelim(3)" id="p-item-3">
+\f1 \'8b\'c8
+\f0 4</div>\
+        </div>\
+        \
+        <div class="prelim-status" id="prelim-progress">
+\f1 \'97\'5c\'91\'49\'83\'4f\'83\'8b\'81\'5b\'83\'76
+\f0 : 1 / 10</div>\
+        <button class="btn" onclick="nextPrelim()">
+\f1 \'8e\'9f\'82\'d6
+\f0  
+\f1 \'81\'84
+\f0 </button>\
+    </div>\
+\
+    <!-- ==================== 
+\f1 \'87\'42\'96\'7b\'90\'ed\'83\'58\'83\'65\'83\'62\'83\'76
+\f0  ==================== -->\
+    <div id="step-main" class="step-section">\
+        <h2>
+\f1 \'87\'42\'96\'7b\'90\'ed\'81\'46\'82\'e6\'82\'e8\'8d\'44\'82\'ab\'82\'c8\'95\'fb\'82\'f0\'91\'49\'82\'f1\'82\'c5\'82\'ad\'82\'be\'82\'b3\'82\'a2
+\f0 </h2>\
+        <div id="battleNumber" style="font-size: 14px; color: #555; margin-bottom: 10px;"></div>\
+        <table id="mainTable">\
+            <tr>\
+                <td id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></td>\
+                <td class="middle-btn" onclick="if(finishFlag==0)sortList(0);">
+\f1 \'88\'f8\'82\'ab\'95\'aa\'82\'af
+\f0 </td>\
+                <td id="rightField" class="battle-btn" onclick="if(finishFlag==0)sortList(1);"></td>\
+            </tr>\
+            <tr>\
+                <td></td>\
+                <td class="middle-btn" onclick="if(finishFlag==0)sortList(0);">
+\f1 \'82\'c7\'82\'bf\'82\'e7\'82\'e0
+\f0 <br>
+\f1 \'92\'6d\'82\'e7\'82\'c8\'82\'a2
+\f0 </td>\
+                <td></td>\
+            </tr>\
+        </table>\
+    </div>\
+\
+    <!-- ==================== 
+\f1 \'87\'43\'8c\'8b\'89\'ca\'83\'58\'83\'65\'83\'62\'83\'76
+\f0  ==================== -->\
+    <div id="step-result" class="step-section">\
+        <h2>
+\f1 \'8d\'c5\'8f\'49\'8c\'8b\'89\'ca\'81\'69
+\f0 TOP20
+\f1 \'81\'6a
+\f0 </h2>\
+        <div id="resultField"></div>\
+        <button class="btn" onclick="location.reload()">
+\f1 \'8d\'c5\'8f\'89\'82\'a9\'82\'e7\'82\'e2\'82\'e8\'92\'bc\'82\'b7
+\f0 </button>\
+    </div>\
+</div>\
+\
+<script>\
+// ==========================================\
+// 
+\f1 \'83\'66\'81\'5b\'83\'5e\'82\'cc\'92\'e8\'8b\'60
+\f0 \
+// ==========================================\
+var namMemberSeries = \{\};\
+var seriesList = ["1","2","3","4","5","6","7","8","9","10","11","12"];\
+var seriesTitle = ["2007-2012","2013-2015","2016-2018","2018-2019","2020-2022","2023-2024","2025-2026","Hey! Say! 7","Hey! Say! BEST","
+\f1 \'83\'5c\'83\'8d
+\f0 ","
+\f1 \'83\'86\'83\'6a\'83\'62\'83\'67
+\f0 ","
+\f1 \'82\'d9\'82\'a9
+\f0 "];\
+\
+// 
+\f1 \'81\'9a\'81\'9a\'81\'9a
+\f0  
+\f1 \'82\'b1\'82\'b1\'82\'c9\'8c\'b3\'82\'cc
+\f0  namMemberSeries["1"] 
+\f1 \'81\'60
+\f0  ["12"] 
+\f1 \'82\'cc\'94\'7a\'97\'f1\'82\'f0\'93\'5c\'82\'e8\'95\'74\'82\'af\'82\'c4\'82\'ad\'82\'be\'82\'b3\'82\'a2
+\f0  
+\f1 \'81\'9a\'81\'9a\'81\'9a\
+
+\f0 \
+namMemberSeries["1"] = new Array(\
+"Ultra Music Power",\
+"Star Time",\
+"Too Shy",\
+"Dreams come true",\
+"Chance to Change",\
+"Your Seed",\
+"\uc0\u20882 \u38522 \u12521 \u12452 \u12480 \u12540 ",\
+"\uc0\u30495 \u22812 \u20013 \u12398 \u12471 \u12515 \u12489 \u12540 \u12508 \u12540 \u12452 ",\
+"\uc0\u12473 \u12463 \u12540 \u12523 \u38761 \u21629 ",\
+"Deep night \uc0\u21531 \u24605 \u12358 ",\
+"\uc0\u30643 \u12398 \u12473 \u12463 \u12522 \u12540 \u12531 ",\
+"\uc0\u36637 \u12365 \u12487 \u12452 \u12474 ",\
+"Romeo & Juliet",\
+"DREAMER",\
+"INFINITY",\
+"\uc0\u30495 \u32005 ",\
+"\uc0\u24773 \u29105 JUMP",\
+"\uc0\u12377 \u12414 \u12356 \u12427 \u12381 \u12435 \u12368 ",\
+"Memories",\
+"Time",\
+"\uc0\u12450 \u12452 \u9734 \u12473 \u12463 \u12522 \u12540 \u12512 ",\
+"Dash!!",\
+"Thank You \uc0\u65374 \u20693 \u12383 \u12385 \u12363 \u12425 \u21531 \u12408 \u65374 ",\
+"\uc0\u12300 \u12354 \u12426 \u12364 \u12392 \u12358 \u12301 \u65374 \u19990 \u30028 \u12398 \u12393 \u12371 \u12395 \u12356 \u12390 \u12418 \u65374 ",\
+"FLY",\
+"\uc0\u12473 \u12494 \u12454 \u12477 \u12531 \u12464 ",\
+"\uc0\u20108 \u20154 \u25499 \u12369 \u12398 \u22580 \u25152 ",\
+"OVER",\
+"Born in the EARTH",\
+"\uc0\u24859 ing-\u12450 \u12452 \u12471 \u12486 \u12523 ",\
+"Magic Power",\
+"Beat Line",\
+"\uc0\u30496 \u12522 \u12494 \u26862 ",\
+"BE ALIVE",\
+"SUPER DELICATE",\
+"JUMP Around The World!!!",\
+"succeed",\
+"\uc0\u12497 \u12540 \u12501 \u12455 \u12463 \u12488  \u12521 \u12452 \u12501 ",\
+"\uc0\u12388 \u12394 \u12368 \u25163 \u12392 \u25163 ",\
+"\uc0\u20693 \u12399 Vampire",\
+"Hero",\
+"Hurry up!",\
+"\uc0\u12469 \u12512 \u65286 \u12500 \u12531 \u12461 \u12540 ",\
+"Together forever",\
+"Endless Dream"\
+\
+);\
+//*********************************************************\
+namMemberSeries["2"] = new Array(\
+"Come On A My House",\
+"BOUNCE",\
+"New Hope \uc0\u65374 \u12371 \u12435 \u12394 \u12395 \u20693 \u12425 \u12399 \u12402 \u12392 \u12388 ",\
+"Ride With Me",\
+"Go To The Future",\
+"GIFT",\
+"School Girl",\
+"Hands Up",\
+"Aino Arika",\
+"\uc0\u24859 \u12377 \u12428 \u12400 \u12418 \u12387 \u12392 \u12495 \u12483 \u12500 \u12540 \u12521 \u12452 \u12501 ",\
+"\uc0\u26716 \u12289 \u21682 \u12356 \u12383 \u12424 ",\
+"OUR FUTURE",\
+"FOREVER",\
+"Ready Go",\
+"\uc0\u20999 \u12394 \u12373 \u12289 \u12402 \u12365 \u12363 \u12360 \u12395 ",\
+"Candle",\
+"\uc0\u12497 \u12473 \u12486 \u12523 ",\
+"\uc0\u12467 \u12531 \u12497 \u12473 \u12525 \u12540 \u12474 ",\
+"Come Back\'85?",\
+"RELOAD",\
+"\uc0\u12399 \u12376 \u12414 \u12426 \u12398 \u12513 \u12525 \u12487 \u12451 ",\
+"My World",\
+"\uc0\u12392 \u12418 \u12384 \u12385 \u12384 \u12424 ",\
+"\uc0\u12454 \u12451 \u12540 \u12463 \u12456 \u12531 \u12480 \u12540 ",\
+"\uc0\u26126 \u26085 \u12408 \u12398 YELL",\
+"Through the night",\
+"\uc0\u12524 \u12452 \u12531 \u12508 \u12540 \u12461 \u12515 \u12531 \u12487 \u12452 \u12540 \u12460 \u12540 \u12523 ",\
+"Chau\uc0\u65283 ",\
+"\uc0\u25105 I Need You",\
+"JUMPing CAR",\
+"Walk",\
+"SHen SHera SHen",\
+"\uc0\u12461 \u12521 \u12461 \u12521 \u20809 \u12428 ",\
+"\uc0\u24859 \u12424 \u12289 \u20693 \u12434 \u23566 \u12356 \u12390 \u12422 \u12369 ",\
+"Fever",\
+"Boys Don't Stop",\
+"Dangerous",\
+"\uc0\u12520 \u12527 \u12512 \u12471 \u9733 \u12471 \u12517 \u12540 \u12479 \u12540 ",\
+"Farewell",\
+"Very Very Happy",\
+"\uc0\u27578 \u12379 \u12435 \u12379 \u12540 \u12471 \u12519 \u12531 \u12474 (Hey! Say! JUMP ver.)",\
+"DISCO JOCKEY!!!",\
+"Viva\uc0\u65281  9's SOUL",\
+"Puppy Boo",\
+"\uc0\u12461 \u12511 \u12450 \u12488 \u12521 \u12463 \u12471 \u12519 \u12531 ",\
+"ChikuTaku",\
+"\uc0\u31179 \u12289 \u26228 \u12428 \u12290 \u20693 \u12395 \u39080 \u12364 \u21561 \u12356 \u12383 \u12290 ",\
+"ShaIl We?",\
+"NEW AGE",\
+"Ignition"\
+);\
+//*********************************************************\
+namMemberSeries["3"] = new Array(\
+"\uc0\u30495 \u21091 SUNSHINE",\
+"We are \uc0\u30007 \u12398 \u23376 \u65281 ",\
+"Eve",\
+"Masquerade",\
+"RUN de Boo\uc0\u65281 ",\
+"\uc0\u12489 \u12522 \u12540 \u12512 \u12510 \u12473 \u12479 \u12540 ",\
+"B.A.B.Y.",\
+"Special Love",\
+"Dear.",\
+"Eternal",\
+"SUPERMAN",\
+"order",\
+"Tasty U",\
+"\uc0\u12473 \u12525 \u12540 \u12514 \u12540 \u12471 \u12519 \u12531 ",\
+"\uc0\u24859 \u12398 \u12471 \u12517 \u12499 \u12489 \u12453 \u12496 ",\
+"KISS Diary",\
+"Brand New World",\
+"From.",\
+"Fantastic Time",\
+"Never Let You Go",\
+"\uc0\u38745 \u23490 \u12398 \u26397 \u12289 \u21531 \u12392 \u12356 \u12427 \u19990 \u30028 \u12290 ",\
+"\uc0\u12527 \u12531 \u12480 \u12540 \u12525 \u12540 \u12489 ",\
+"What A Feeling",\
+"Give Me Love",\
+"Traffic Jam",\
+"TOY",\
+"Baby I Love You",\
+"Glorious",\
+"\uc0\u26126 \u26085 \u12495 \u12524 \u12523 \u12516 ",\
+"OVER THE TOP",\
+"Vanilla Ice",\
+"Funky Time",\
+"PARTY!!",\
+"Our days",\
+"Precious Girl",\
+"\uc0\u28796 \u29105 \u12398 \u22818 ",\
+"Smile in Summer",\
+"I/O",\
+"H.our Time",\
+"TO THE TOP",\
+"\uc0\u12488 \u12499 \u12521 \u12398 \u21521 \u12371 \u12358 ",\
+"\uc0\u24515 \u12539 \u25216 \u12539 \u20307 ",\
+"Viva! 9's SOUL(2017 Ver.)",\
+"\uc0\u22826 \u38525 \u12395 LOVE MOTION!",\
+"White Love",\
+"\uc0\u26143 \u12398 \u38477 \u12427 \u22812 \u12395 ",\
+"Rock U Baby!",\
+"Good Life",\
+"Spark\'d72",\
+"Usual Soldeir"\
+\
+);\
+//*********************************************************\
+namMemberSeries["4"] = new Array(\
+"\uc0\u12510 \u12456 \u12530 \u12512 \u12465 ",\
+"Love Hurricane",\
+"BE MY VALENTINE!",\
+"\uc0\u12481 \u12519 \u12467 \u12521 \u12479 ",\
+"NEW LIFE",\
+"Diggy Down",\
+"Snow Memories",\
+"COSMIC\uc0\u9734 HUMAN",\
+"Go My Way",\
+"SWEET or HOT ?",\
+"\uc0\u12523 \u12540 \u12524 \u12483 \u12488 ",\
+"Draw My Life !",\
+"BANGER NIGHT",\
+"Dance The Nght Away",\
+"\uc0\u22899 \u29579 \u34562 ",\
+"One & One Makes Two",\
+"TO THE GALAXY",\
+"\uc0\u12414 \u12383 \u12371 \u12398 \u22580 \u25152 \u12391 ",\
+"Jealous guy",\
+"\uc0\u26368 \u24460 \u12398 \u12521 \u12502 \u12477 \u12531 \u12464 ",\
+"FLASH",\
+"Swinging days",\
+"City Wander",\
+"We Believe",\
+"OL\'c8!",\
+"Journey",\
+"YOU & I",\
+"Lucky-Unlucky",\
+"Last Dance",\
+"Entertainment",\
+"\uc0\u12496 \u12531 \u12499 \u12540 \u12494 ",\
+"\uc0\u24859 \u12384 \u12369 \u12364 \u12377 \u12409 \u12390 -What do you want?-",\
+"Bloom",\
+"\uc0\u12501 \u12449 \u12531 \u12501 \u12449 \u12540 \u12524 \u65281 ",\
+"\uc0\u27874 \u12398 \u19978 \u12391 \u20250 \u12356 \u12414 \u12375 \u12423 \u12358 ",\
+"Summer Romantic",\
+"\uc0\u12511 \u12521 \u12463 \u12523 \u12527 \u12531 \u12480 \u12540 \u12510 \u12472 \u12483 \u12463 ",\
+"\uc0\u29539 \u12392 \u34196 \u34183 ",\
+"\uc0\u12399 \u12394 \u22769 \u12418 \u12435 \u12417 ",\
+"UTAGE Tonight",\
+"\uc0\u12300 I\u12301 ",\
+"Zombie Step",\
+"Love Equation",\
+"\uc0\u12450 \u12452 \u12494 \u12518 \u12454 \u12498 ",\
+"CALL&PRAY",\
+"\uc0\u12497 \u12524 \u12540 \u12489 \u12364 \u22987 \u12414 \u12427 ",\
+"\uc0\u12407 \u12357 \u12398 \u12358 \u12383 ",\
+"\uc0\u12497 \u12524 \u12540 \u12489 \u12399 \u32066 \u12431 \u12425 \u12394 \u12356  -Life is an Adventure-",\
+"\uc0\u12417 \u65288 \u12471 \u12540 \u12463 \u12524 \u12483 \u12488 \u12488 \u12521 \u12483 \u12463 \u65289 ",\
+);\
+//*********************************************************\
+namMemberSeries["5"] = new Array(\
+\
+"I am",\
+"Muah Muah",\
+"\uc0\u12463 \u12521 \u12531 \u12513 \u12522 \u12450 ",\
+"\uc0\u12392 \u12365 \u12417 \u12365 \u12399 \u22040 \u12376 \u12419 \u12394 \u12356 ",\
+"Last Mermaid...",\
+"Love me PLZ",\
+"Stupid",\
+"U",\
+"\uc0\u35328 \u33865 \u12399 \u12356 \u12425 \u12394 \u12356 ",\
+"Your Song",\
+"\uc0\u12354 \u12394 \u12383 \u24819 \u12356 ",\
+"Secret Magic",\
+"hearts color",\
+"BOW WOW SONG",\
+"\uc0\u12498 \u12459 \u12522 \u12469 \u12473 ",\
+"Fab-ism",\
+"\uc0\u29436 \u38738 \u24180 ",\
+"\uc0\u21315 \u22812 \u19968 \u22812 ",\
+"Jazzy Cut",\
+"Snow White",\
+"Liar",\
+"MANTRA",\
+"Puppet",\
+"Kiss Your Lips",\
+"\uc0\u24481 \u20285 \u12392 \u30693 \u12427 \u19990 \u30028 ",\
+"\uc0\u12490 \u12452 \u12514 \u12494 \u12493 \u12480 \u12522 ",\
+"Last forever",\
+"\uc0\u38343 \u12398 \u20808 \u12408 \u20693 \u12425 \u12399 \u27497 \u12365 \u20986 \u12377 ",\
+"\uc0\u12493 \u12460 \u12486 \u12451 \u12502 \u12501 \u12449 \u12452 \u12479 \u12540 ",\
+"Try & error",\
+"#502",\
+"Letter",\
+"\uc0\u20693 \u12425 \u12398 \u24847 \u21619 \u12434 ",\
+"\uc0\u32676 \u38738 \u12521 \u12531 \u12490 \u12454 \u12455 \u12452 ",\
+"Lovely Dance",\
+"\uc0\u12471 \u12515 \u12483 \u12479 \u12540 \u12481 \u12515 \u12531 \u12473 ",\
+"\uc0\u12489 \u12521 \u12510 \u12481 \u12483 \u12463 ",\
+"Love Your Life",\
+"Sing-along",\
+"Break The Wall",\
+"\uc0\u12514 \u12494 \u12525 \u12540 \u12464 ",\
+"\uc0\u12495 \u12525 \u12540 \u12513 \u12525 \u12487 \u12451 ",\
+"ASAP!",\
+"a r e a",\
+"\uc0\u24651 \u12434 \u12377 \u12427 \u12435 \u12384 ",\
+"\uc0\u26149 \u29572 \u40165 ",\
+"Happy\uc0\u65281 Birthdaaaaaaaay",\
+"MASTERPIECE",\
+"\uc0\u12469 \u12531 \u12480 \u12540 \u12477 \u12491 \u12450 ",\
+"\uc0\u26989 \u21209 \u9734 \u12473 \u12540 \u12497 \u12540 \u12510 \u12531 ",\
+"Fate or Destiny",\
+"OH MY BUDDY",\
+"\uc0\u28450 \u33457 \u28779 ",\
+"\uc0\u12499 \u12479 \u12540 \u12481 \u12519 \u12467 \u12524 \u12540 \u12488 ",\
+"\uc0\u21531 \u12364 \u12415 \u12383 \u19968 \u31561 \u26143 ",\
+"Change the world Y2K",\
+"\uc0\u20154 \u21147 \u39131 \u34892 \u27231 ",\
+"Get Out Of My House"\
+\
+);\
+//*********************************************************\
+namMemberSeries["6"] = new Array(\
+"DEAR MY LOVER",\
+"\uc0\u12454 \u12521 \u12458 \u12514 \u12486 ",\
+"\uc0\u12456 \u12540 \u12487 \u12523 \u12527 \u12452 \u12473 ",\
+"VILLAIN",\
+"Ready to Jump",\
+"\uc0\u12384 \u12356 \u12377 \u12365 \u12394 \u12365 \u12415 \u12408 ",\
+"\uc0\u12381 \u12428 \u12382 \u12428 \u12290 ",\
+"Dirty Innocence",\
+"\uc0\u12392 \u12365 \u12417 \u12367 \u12354 \u12394 \u12383 ",\
+"\uc0\u12381 \u12387 \u12392 \u37857 \u12395 \u12461 \u12473 \u12434 \u12375 \u12383 ",\
+"Tiki Don",\
+"\uc0\u12414 \u12384 \u20999 \u12425 \u12394 \u12356 ",\
+"\uc0\u12354 \u12398 \u26085 \u12398 \u22818 \u12434 \u35211 \u12373 \u12379 \u12390 \u12424 ",\
+"\uc0\u12461 \u12511 \u12494 \u12511 \u12459 \u12479 ",\
+"PULL UP",\
+"Evans Knot",\
+"please, 'Q'uickly!",\
+"UMP",\
+"NERD",\
+"BAD NEWS \uc0\u35211 \u12383 \u12367 \u12394 \u12356 \u65281 ",\
+"\uc0\u22519 \u20107 \u30340 \u12394 \u12508 \u12540 \u12452 \u12501 \u12524 \u12531 \u12489 ",\
+"\uc0\u12495 \u12452 \u12521 \u12452 \u12488 ",\
+"\uc0\u12490 \u12518 \u12479 \u12398 \u28023 ",\
+"\uc0\u12523 \u12540 \u12486 \u12451 \u12540 \u12531 ",\
+"She's Amazing",\
+"Donkey Gongs",\
+"\uc0\u12471 \u12450 \u12486 \u12451 \u12459 ",\
+"Never end...",\
+"DARK HERO",\
+"\uc0\u12414 \u12383 \u12289 \u12354 \u12375 \u12383 ",\
+"eek!!",\
+"\uc0\u26368 \u24460 \u12398 \u28057 ",\
+"\uc0\u12522 \u12474 \u12512 ",\
+"Cheer!"\
+\
+\
+);\
+  //*********************************************************\
+namMemberSeries["7"] = new Array(\
+"encore",\
+"SUPER CRUISIN'",\
+"Step by step",\
+"\uc0\u26410 \u26469 \u32218 ",\
+"\uc0\u12521 \u12502 \u12524 \u12479 \u12540 ",\
+"MATSURI\uc0\u9734 FEVER",\
+"GHOST",\
+"Symphony",\
+"RUN THIS WORLD",\
+"Scale It Up",\
+"cowboy",\
+"\uc0\u21531 \u12384 \u12369 \u12398 1\u12506 \u12540 \u12472 ",\
+"Serenity",\
+"\uc0\u12513 \u12525 \u12522 ",\
+"\uc0\u21127 \u30340 LOVE",\
+"\uc0\u12495 \u12491 \u12459 \u12511 ",\
+"traveler",\
+"\uc0\u36196 \u35064 \u12293 ",\
+"\uc0\u12495 \u12540 \u12488 \u12499 \u12540 \u12488 ",\
+"NEED YOU",\
+"CUE CUE CUTE"\
+\
+);\
+//*********************************************************\
+namMemberSeries["8"] = new Array(\
+"\uc0\u12460 \u12531 \u12496 \u12524 \u12483 \u12484 \u12468 \u12540 \u65281 \u65288 7\u65289 ",\
+"\uc0\u12518 \u12540 \u12539 \u12460 \u12483 \u12479 \u12539 \u12514 \u12540 \u12523 \u65288 7\u65289 ",\
+"GET!!\uc0\u65288 7\u65289 ",\
+"\uc0\u12527 \u12531 \u12480 \u12540 \u12521 \u12531 \u12489 \u65381 \u12488 \u12524 \u12452 \u12531 \u65288 7\u65289 ",\
+"\uc0\u12454 \u12479 \u12454 \u12479 \u12454 \u65288 7\u65289 ",\
+"\uc0\u33457 \u12360 \u12364 \u12362 \u65288 7\u65289 ",\
+"Just For You\uc0\u65288 7\u65289 ",\
+"Oh\uc0\u65281 My Jelly\u65281 \u65374 \u20693 \u12425 \u12399 OK\u65374 \u65288 7\u65289 ",\
+"\uc0\u12383 \u12384 \u21069 \u12408 \u65288 7\u65289 ",\
+"KAZEKAORU\uc0\u65288 7\u65289 ",\
+"\uc0\u12497 \u12540 \u12522 \u12540 \u12514 \u12531 \u12473 \u12479 \u12540 \u65288 7\u65289 ",\
+"Sweet Liar\uc0\u65288 7\u65289 ",\
+"\uc0\u12420 \u12435 \u12385 \u12419 \u12394 \u12498 \u12540 \u12525 \u12540 \u65288 7\u65289 ",\
+"Virtual Butterfly\uc0\u65288 7\u65289 ",\
+"\uc0\u12354 \u12398 \u26085 \u12398 \u20693 \u12408 \u65288 7\u65289 "\
+\
+\
+);\
+//*********************************************************\
+namMemberSeries["9"] = new Array(\
+"Score\uc0\u65288 BEST\u65289 ",\
+"Screw\uc0\u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12463 \u12540 \u12523 \u12487 \u12452 \u12474 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u65381 \u12522 \u65381 \u12523 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12497 \u12452 \u12471 \u12540 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12490 \u12483 \u12503 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12463 \u12521 \u12531 \u12502 \u12523 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12462 \u12523 \u12475 \u12484 \u12490 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12540 \u12484 \u12487 \u12452 \u12474 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12523 \u12540 \u65288 BEST\u65289 ",\
+"Speed It Up\uc0\u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12479 \u12540 \u12488 \u12487 \u12452 \u12474 \u65288 BEST\u65289 ",\
+"\uc0\u12473 \u12531 \u12480 Dance\u65288 BEST\u65289 ",\
+"Sweet Chilli Sauce\uc0\u65288 BEST\u65289 "\
+\
+);\
+//*********************************************************\
+namMemberSeries["10"] = new Array(\
+"\uc0\u20474 \u12383 \u12385 \u12398 \u38738 \u26149 \u65288 \u39641 \u26408 \u65289 ",\
+"Do it again\uc0\u65288 \u23665 \u30000 \u65289 ",\
+"159\uc0\u65288 \u30693 \u24565 \u65289 ",\
+"Waiting for the rain\uc0\u65288 \u20013 \u23798 \u65289 ",\
+"\uc0\u26465 \u20214 \u21453 \u23556 \u65288 \u20234 \u37326 \u23614 \u65289 ",\
+"Bubble Gum\uc0\u65288 \u26377 \u23713 \u65289 ",\
+"\uc0\u38988 \u21517 \u12398 \u28961 \u12356 \u29289 \u35486 \u65288 \u39641 \u26408 \u65289 ",\
+"PINK\uc0\u65288 \u20843 \u20057 \u22899 \u65289 ",\
+"\uc0\u27969 \u26143 \u12398 \u35433 \u65288 \u34222 \u65289 ",\
+"Oh! my darling\uc0\u65288 \u23665 \u30000 \u65289 "\
+\
+);\
+//*********************************************************\
+namMemberSeries["11"] = new Array(\
+"Yes!\uc0\u65288 \u23665 \u30000 \u12539 \u39641 \u26408 \u12539 \u20843 \u20057 \u22899 \u65289 ",\
+"Super Super Night\uc0\u65288 \u30693 \u24565 \u12539 \u20013 \u23798 \u12539 \u34222 \u65289 ",\
+"Oh!\uc0\u12450 \u12452 \u12489 \u12523 !\u65288 \u23713 \u26412 \u12539 \u26377 \u23713 \u12539 \u20234 \u37326 \u23614 \u65289 ",\
+"UNION\uc0\u65288 \u26377 \u23713 \u12539 \u20843 \u20057 \u22899 \u12539 \u34222 \u65289 ",\
+"\uc0\u12506 \u12483 \u12488 \u12471 \u12519 \u12483 \u12503 \u12521 \u12502 \u12514 \u12540 \u12471 \u12519 \u12531 \u65288 \u30693 \u24565 \u12539 \u20013 \u23798 \u12539 \u39641 \u26408 \u12539 \u20234 \u37326 \u23614 \u65289 ",\
+"3\uc0\u26376 14\u26085 \u65374 \u26178 \u35336 \u65288 \u23665 \u30000 \u12539 \u23713 \u26412 \u65289 ",\
+"\uc0\u20170 \u22812 \u36020 \u26041 \u12434 \u21475 \u35500 \u12365 \u12414 \u12377 \u65288 \u20234 \u37326 \u23614 \u12539 \u20843 \u20057 \u22899 \u65289 ",\
+"Mr.Flawless\uc0\u65288 \u20013 \u23798 \u12539 \u39641 \u26408 \u12539 \u34222 \u65289 ",\
+"\uc0\u20693 \u12392 \u12369 \u12356 \u12392 \u65288 \u30693 \u24565 \u12539 \u23713 \u26412 \u65289 ",\
+"My Girl\uc0\u65288 \u23665 \u30000 \u12539 \u26377 \u23713 \u65289 ",\
+"Mystery O\uc0\u65288 \u30693 \u24565 \u12539 \u26377 \u23713 \u65289 ",\
+"\uc0\u12488 \u12524 \u12531 \u12487 \u12451 \u12540 \u12521 \u12502  #REIWA\u65288 \u20013 \u23798 \u12539 \u39641 \u26408 \u65289 ",\
+"Napa Napa\uc0\u65288 \u23665 \u30000 \u12539 \u20234 \u37326 \u23614 \u65289 ",\
+"Go Fighter\uc0\u65288 \u20843 \u20057 \u22899 \u12539 \u34222 \u65289 ",\
+"Are You There?\uc0\u65288 \u26377 \u23713 \u12539 \u20843 \u20057 \u22899 \u12539 \u39641 \u26408 \u65289 "\
+\
+);\
+//*********************************************************\
+namMemberSeries["12"] = new Array(\
+"Hey! Say!\uc0\u65288 \u26087 Hey!Say!7\u65289 ",\
+"BON BON\uc0\u65288 \u26087 Hey!Say!7\u65289 ",\
+"I\uc0\u12434 \u12367 \u12428 \u65288 \u26087 Hey!Say!7\u65289 ",\
+"\uc0\u65374 Prelude of smart\u65374 \u65288 smart\u65289 ",\
+"\uc0\u12422 \u12540 \u12392 \u21481 \u12356 \u12390 \u12415 \u12383 \u12290 ",\
+"Fantasist(Instrumental)\uc0\u65288 JUMPing CAR\u65289 ",\
+"\uc0\u27578 \u12379 \u12435 \u12379 \u12540 \u12471 \u12519 \u12531 \u12474 \u65288 \u12379 \u12435 \u12379 \u12540 \u12471 \u12519 \u12531 \u12474 \u65289 ",\
+"\uc0\u12373 \u12424 \u12394 \u12425 \u12475 \u12531 \u12475 \u12540 \u12471 \u12519 \u12531 \u65288 \u12379 \u12435 \u12379 \u12540 \u12471 \u12519 \u12531 \u12474 \u65289 ",\
+"Invitation(Instrumental)\uc0\u65288 DEAR.)",\
+"\uc0\u30495 \u22812 \u20013 \u12398 \u12471 \u12515 \u12489 \u12540 \u12508 \u12540 \u12452 \u65374 SENSE or LOVE Remix",\
+"\uc0\u12501 \u12449 \u12531 \u12501 \u12449 \u12540 \u12524 \u65281 DE \u30406 \u36362 \u12426 ",\
+"\uc0\u12454 \u12451 \u12540 \u12463 \u12456 \u12531 \u12480 \u12540 \u65288 Torikae Mix\u65289 ",\
+"TO THE TOP\uc0\u65288 Torikae Mix\u65289 ",\
+"\uc0\u20693 \u12399 Vampire\u65288 Torikae Mix\u65289 ",\
+"S say -Sinfonia-"\
+\
+);\
+\
+//*********************************************************\
+\
+\
+// ==========================================\
+// 
+\f1 \'97\'5c\'91\'49\'97\'70\'82\'cc\'95\'cf\'90\'94
+\f0 \
+// ==========================================\
+var candidateSongs = []; // 
+\f1 \'91\'49\'91\'f0\'82\'b3\'82\'ea\'82\'bd\'91\'53\'8b\'c8
+\f0 \
+var prelimBlocks = [];   // 4
+\f1 \'8b\'c8\'82\'b8\'82\'c2\'82\'c9\'95\'aa\'82\'af\'82\'bd\'94\'7a\'97\'f1
+\f0 \
+var currentBlockIdx = 0; // 
+\f1 \'8c\'bb\'8d\'dd\'89\'bd\'83\'4f\'83\'8b\'81\'5b\'83\'76\'96\'da\'82\'a9
+\f0 \
+var selectedInBlock = [];// 
+\f1 \'8c\'bb\'8d\'dd\'82\'cc\'89\'e6\'96\'ca\'82\'c5\'91\'49\'91\'f0\'92\'86\'82\'cc\'8b\'c8\'83\'43\'83\'93\'83\'66\'83\'62\'83\'4e\'83\'58\'81\'69
+\f0 0
+\f1 \'81\'60
+\f0 3
+\f1 \'81\'6a
+\f0 \
+var survivingSongs = []; // 
+\f1 \'97\'5c\'91\'49\'82\'f0\'92\'ca\'89\'df\'82\'b5\'82\'bd\'8b\'c8
+\f0 \
+const MIN_REQUIRED_SONGS = 8; // 
+\f1 \'81\'9a\'96\'7b\'90\'ed\'82\'c9\'90\'69\'82\'de\'82\'bd\'82\'df\'82\'cc\'8d\'c5\'92\'e1\'8b\'c8\'90\'94\'81\'69\'8e\'a9\'97\'52\'82\'c9\'92\'b2\'90\'ae\'82\'b5\'82\'c4\'82\'ad\'82\'be\'82\'b3\'82\'a2\'81\'6a
+\f0 \
+\
+// ==========================================\
+// 
+\f1 \'8f\'89\'8a\'fa\'89\'bb\'81\'45\'89\'e6\'96\'ca\'90\'d8\'82\'e8\'91\'d6\'82\'a6
+\f0 \
+// ==========================================\
+window.onload = function() \{\
+    var cbHTML = "";\
+    for (var i = 0; i < seriesList.length; i++) \{\
+        var checked = (i === 0) ? "checked" : "";\
+        cbHTML += `<label style="display:inline-block; width:45%; margin-bottom:5px;">\
+                   <input type="checkbox" name="s1" value="$\{seriesList[i]\}" $\{checked\}> \
+                   $\{seriesTitle[i]\}\
+                   </label>`;\
+    \}\
+    document.getElementById("series-checkboxes").innerHTML = cbHTML;\
+\};\
+\
+function showStep(stepId) \{\
+    var steps = document.querySelectorAll('.step-section');\
+    steps.forEach(s => s.classList.remove('active'));\
+    document.getElementById(stepId).classList.add('active');\
+\}\
+\
+// 
+\f1 \'94\'7a\'97\'f1\'83\'56\'83\'83\'83\'62\'83\'74\'83\'8b\'97\'70
+\f0 \
+Array.prototype.shuffle = function() \{\
+    for (let i = this.length - 1; i > 0; i--) \{\
+        const j = Math.floor(Math.random() * (i + 1));\
+        [this[i], this[j]] = [this[j], this[i]];\
+    \}\
+    return this;\
+\}\
+\
+// ==========================================\
+// 
+\f1 \'97\'5c\'91\'49\'82\'cc\'8f\'88\'97\'9d
+\f0 \
+// ==========================================\
+function startPreliminary() \{\
+    candidateSongs = [];\
+    var checkboxes = document.getElementsByName("s1");\
+    for (var i = 0; i < checkboxes.length; i++) \{\
+        if(checkboxes[i].checked && namMemberSeries[checkboxes[i].value])\{\
+            candidateSongs = candidateSongs.concat(namMemberSeries[checkboxes[i].value]);\
+        \}\
+    \}\
+    \
+    if(candidateSongs.length === 0) \{\
+        alert("
+\f1 \'8d\'c5\'92\'e1
+\f0 1
+\f1 \'82\'c2\'82\'cc\'94\'4e\'91\'e3\'82\'f0\'91\'49\'91\'f0\'82\'b5\'82\'c4\'82\'ad\'82\'be\'82\'b3\'82\'a2\'81\'42
+\f0 "); return;\
+    \}\
+\
+    candidateSongs.shuffle(); // 
+\f1 \'91\'53\'8b\'c8\'82\'f0\'83\'56\'83\'83\'83\'62\'83\'74\'83\'8b
+\f0 \
+    prelimBlocks = [];\
+    survivingSongs = [];\
+    \
+    // 4
+\f1 \'8b\'c8\'82\'b8\'82\'c2\'83\'4f\'83\'8b\'81\'5b\'83\'76\'89\'bb
+\f0 \
+    for(let i=0; i < candidateSongs.length; i+=4) \{\
+        prelimBlocks.push(candidateSongs.slice(i, i+4));\
+    \}\
+\
+    currentBlockIdx = 0;\
+    renderPrelimBlock();\
+    showStep("step-preliminary");\
+\}\
+\
+function renderPrelimBlock() \{\
+    selectedInBlock = [];\
+    var currentSongs = prelimBlocks[currentBlockIdx];\
+    \
+    for(let i=0; i<4; i++) \{\
+        let el = document.getElementById("p-item-" + i);\
+        el.className = "prelim-item"; // 
+\f1 \'91\'49\'91\'f0\'8f\'f3\'91\'d4\'82\'f0\'83\'8a\'83\'5a\'83\'62\'83\'67
+\f0 \
+        if (currentSongs[i]) \{\
+            el.innerHTML = currentSongs[i];\
+            el.style.display = "flex";\
+        \} else \{\
+            el.style.display = "none"; // 
+\f1 \'92\'5b\'90\'94\'82\'c5
+\f0 4
+\f1 \'8b\'c8\'96\'a2\'96\'9e\'82\'cc\'8f\'ea\'8d\'87\'89\'42\'82\'b7
+\f0 \
+        \}\
+    \}\
+    document.getElementById("prelim-progress").innerHTML = \
+        `
+\f1 \'97\'5c\'91\'49\'83\'4f\'83\'8b\'81\'5b\'83\'76
+\f0 : $\{currentBlockIdx + 1\} / $\{prelimBlocks.length\} 
+\f1 \'81\'69\'8c\'bb\'8d\'dd\'92\'ca\'89\'df
+\f0 : $\{survivingSongs.length\}
+\f1 \'8b\'c8\'81\'6a
+\f0 `;\
+\}\
+\
+function togglePrelim(index) \{\
+    if (!prelimBlocks[currentBlockIdx][index]) return; // 
+\f1 \'8b\'c8\'82\'aa\'82\'c8\'82\'a2\'8f\'ea\'8f\'8a\'82\'cd\'96\'b3\'8e\'8b
+\f0 \
+    \
+    let el = document.getElementById("p-item-" + index);\
+    let idxPos = selectedInBlock.indexOf(index);\
+    \
+    if(idxPos !== -1) \{\
+        selectedInBlock.splice(idxPos, 1);\
+        el.classList.remove("selected");\
+    \} else \{\
+        if(selectedInBlock.length >= 3) \{\
+            alert("
+\f1 \'91\'49\'82\'d7\'82\'e9\'82\'cc\'82\'cd
+\f0 3
+\f1 \'8b\'c8\'82\'dc\'82\'c5\'82\'c5\'82\'b7\'81\'49
+\f0 ");\
+            return;\
+        \}\
+        selectedInBlock.push(index);\
+        el.classList.add("selected");\
+    \}\
+\}\
+\
+function nextPrelim() \{\
+    // 
+\f1 \'91\'49\'91\'f0\'82\'b3\'82\'ea\'82\'bd\'8b\'c8\'82\'f0\'92\'ca\'89\'df\'83\'8a\'83\'58\'83\'67\'82\'c9\'92\'c7\'89\'c1
+\f0 \
+    let currentSongs = prelimBlocks[currentBlockIdx];\
+    for(let i=0; i<selectedInBlock.length; i++) \{\
+        survivingSongs.push(currentSongs[selectedInBlock[i]]);\
+    \}\
+\
+    currentBlockIdx++;\
+    \
+    if(currentBlockIdx < prelimBlocks.length) \{\
+        renderPrelimBlock(); // 
+\f1 \'8e\'9f\'82\'cc\'83\'4f\'83\'8b\'81\'5b\'83\'76\'82\'f0\'95\'5c\'8e\'a6
+\f0 \
+    \} else \{\
+        // 
+\f1 \'97\'5c\'91\'49\'8f\'49\'97\'b9\'81\'41\'96\'7b\'90\'ed\'82\'d6\'8d\'73\'82\'af\'82\'e9\'82\'a9\'83\'60\'83\'46\'83\'62\'83\'4e
+\f0 \
+        if(survivingSongs.length < MIN_REQUIRED_SONGS) \{\
+            alert(`
+\f1 \'96\'7b\'90\'ed\'82\'c9\'90\'69\'82\'de\'82\'bd\'82\'df\'82\'cc\'8d\'c5\'92\'e1\'8b\'c8\'90\'94\'81\'69
+\f0 $\{MIN_REQUIRED_SONGS\}
+\f1 \'8b\'c8\'81\'6a\'82\'c9\'92\'42\'82\'b5\'82\'dc\'82\'b9\'82\'f1\'82\'c5\'82\'b5\'82\'bd\'81\'42\'81\'69\'8c\'bb\'8d\'dd
+\f0 : $\{survivingSongs.length\}
+\f1 \'8b\'c8\'81\'6a
+\f0 \\n
+\f1 \'82\'e0\'82\'a4\'88\'ea\'93\'78\'8f\'f0\'8c\'8f\'82\'f0\'8c\'a9\'92\'bc\'82\'b5\'82\'c4\'8d\'c5\'8f\'89\'82\'a9\'82\'e7\'82\'e2\'82\'e8\'92\'bc\'82\'b5\'82\'c4\'82\'ad\'82\'be\'82\'b3\'82\'a2\'81\'42
+\f0 `);\
+            showStep("step-setup");\
+        \} else \{\
+            startMainSort(); // 
+\f1 \'96\'7b\'90\'ed\'82\'d6\'81\'49
+\f0 \
+        \}\
+    \}\
+\}\
+\
+// ==========================================\
+// 
+\f1 \'96\'7b\'90\'ed\'81\'69\'83\'7d\'81\'5b\'83\'57\'83\'5c\'81\'5b\'83\'67\'81\'6a\'82\'cc\'8f\'88\'97\'9d
+\f0  \uc0\u8251 
+\f1 \'8c\'b3\'82\'cc\'83\'8d\'83\'57\'83\'62\'83\'4e\'82\'f0\'97\'ac\'97\'70
+\f0 \
+// ==========================================\
+var namMember = [];\
+var lstMember = [], parent = [], equal = [], rec = [];\
+var cmp1, cmp2, head1, head2, nrec;\
+var numQuestion, totalSize, finishSize, finishFlag;\
+\
+function startMainSort() \{\
+    namMember = survivingSongs.slice(); // 
+\f1 \'97\'5c\'91\'49\'92\'ca\'89\'df\'8b\'c8\'82\'f0\'83\'5a\'83\'62\'83\'67
+\f0 \
+    namMember.shuffle();\
+\
+    var n = 0, mid, i;\
+    lstMember = []; parent = []; equal = []; rec = [];\
+    \
+    lstMember[n] = [];\
+    for (i=0; i<namMember.length; i++) lstMember[n][i] = i;\
+    \
+    parent[n] = -1; totalSize = 0; n++;\
+\
+    for (i=0; i<lstMember.length; i++) \{\
+        if(lstMember[i].length>=2) \{\
+            mid = Math.ceil(lstMember[i].length/2);\
+            lstMember[n] = lstMember[i].slice(0,mid);\
+            totalSize += lstMember[n].length; parent[n] = i; n++;\
+            lstMember[n] = lstMember[i].slice(mid,lstMember[i].length);\
+            totalSize += lstMember[n].length; parent[n] = i; n++;\
+        \}\
+    \}\
+\
+    for (i=0; i<namMember.length; i++) rec[i] = 0;\
+    nrec = 0;\
+    for (i=0; i<=namMember.length; i++) equal[i] = -1;\
+\
+    cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;\
+    head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0; finishFlag = 0;\
+\
+    showStep("step-main");\
+    showImage();\
+\}\
+\
+function sortList(flag)\{\
+    var i, str;\
+    if (flag<0) \{\
+        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+    \} else if (flag>0) \{\
+        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+    \} else \{\
+        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+        equal[rec[nrec-1]] = lstMember[cmp2][head2];\
+        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+    \}\
+\
+    // 
+\f1 \'8f\'e3\'88\'ca
+\f0 20
+\f1 \'88\'ca\'82\'aa\'8c\'88\'82\'dc\'82\'c1\'82\'bd\'82\'e7\'8f\'49\'97\'b9\'82\'b7\'82\'e9\'83\'74\'83\'89\'83\'4f
+\f0 \
+    if (parent[cmp1] == 0 && nrec >= 20) \{\
+        for (i = 0; i < nrec; i++) lstMember[0][i] = rec[i];\
+        cmp1 = -1; finishSize = totalSize;\
+    \}\
+\
+    if (cmp1 >= 0) \{\
+        if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) \{\
+            while (head1<lstMember[cmp1].length)\{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+        \} else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) \{\
+            while (head2<lstMember[cmp2].length)\{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+        \}\
+        if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) \{\
+            for (i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) lstMember[parent[cmp1]][i] = rec[i];\
+            lstMember.pop(); lstMember.pop(); cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;\
+            if (head1==0 && head2==0) \{ for (i=0; i<namMember.length; i++) rec[i] = 0; nrec = 0; \}\
+        \}\
+    \}\
+\
+    if (cmp1<0) \{\
+        showResult();\
+        finishFlag = 1;\
+    \} else \{\
+        showImage();\
+    \}\
+\}\
+\
+function showImage() \{\
+    var str0 = "Battle No."+numQuestion+"<br>
+\f1 \'90\'69\'8d\'73\'93\'78
+\f0 : "+Math.floor(finishSize*100/totalSize)+"% sorted.";\
+    document.getElementById("battleNumber").innerHTML = str0;\
+    document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];\
+    document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];\
+    numQuestion++;\
+\}\
+\
+function showResult() \{\
+    showStep("step-result");\
+    var ranking = 1, sameRank = 1, str = "";\
+    \
+    str += "<table class='result-table'><tr><th>
+\f1 \'8f\'87\'88\'ca
+\f0 </th><th>
+\f1 \'8b\'c8\'96\'bc
+\f0 </th></tr>";\
+    for (var i = 0; i < namMember.length; i++) \{\
+        if (ranking > 20) break;\
+        str += "<tr><td style='text-align:center;'>" + ranking + "</td><td>" + namMember[lstMember[0][i]] + "</td></tr>";\
+        if (i < namMember.length - 1) \{\
+            if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++;\
+            else \{ ranking += sameRank; sameRank = 1; \}\
+        \}\
+    \}\
+    str += "</table>";\
+    document.getElementById("resultField").innerHTML = str;\
+\}\
+</script>\
+</body>\
+</html>}
