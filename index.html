@@ -37,7 +37,7 @@
     /* メンバーカラーのパステルグラデーションバー */
     .member-colors-bar {
         height: 10px;
-        background: linear-gradient(to right, #e57373, #f06292, #ffb74d, #ffd54f, #81c784, #64b5f6, #ba68c8, #eeeeee);
+        background: linear-gradient(to right, #ffd1d1, #ffd1ff, #ffe8d1, #d1e8ff, #e8d1ff, #64b5f6, #ffffd1, #e8ffd);
         margin: -20px -20px 20px -20px;
     }
     
@@ -45,73 +45,119 @@
     .step-section { display: none; }
     .step-section.active { display: block; }
     
-    h2 { font-size: 18px; color: var(--theme-color); border-bottom: 2px solid var(--theme-color); padding-bottom: 5px; margin-bottom: 15px; }
+h2 { 
+        font-size: 18px; 
+        background-color: var(--theme-color);
+        color: #5d4037; /* チョコレート色 */
+        border: 1px solid #d7ccc8;
+        padding: 10px; 
+        border-radius: 8px; 
+        margin-bottom: 15px; 
+    }
     
-    /* ボタンのスタイル（メンカラ連動） */
     .btn {
         padding: 10px 20px; font-size: 16px; font-weight: bold;
-        background-color: var(--theme-color); color: #fff; border: none;
-        border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s;
+        background-color: var(--theme-color); 
+        color: #5d4037 !important; /* チョコレート色 */
+        border: 1px solid #d7ccc8;
+        border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.2s;
     }
     .btn:hover { opacity: 0.8; }
     
-    .btn-share { background-color: #81D4FA; margin-right: 10px; color: #333;}
-    .btn-save { background-color: #FFCC80; margin-right: 10px; color: #333;}
-    .btn-gray { background-color: #e0e0e0; color: #555; }
+    .btn-share { background-color: #81D4FA; margin-right: 10px; }
+    .btn-save { background-color: #FFCC80; margin-right: 10px; }
+    .btn-gray { background-color: #e0e0e0; }
 
-    /* 担当選択ボタンのグリッド */
-    .oshi-grid {
-        display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px;
-    }
+    .oshi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
     @media (min-width: 500px) { .oshi-grid { grid-template-columns: repeat(4, 1fr); } }
     
     .oshi-btn {
         padding: 12px; font-size: 14px; font-weight: bold; border-radius: 8px;
-        cursor: pointer; color: #333; border: 2px solid transparent; transition: 0.2s;
+        cursor: pointer; transition: 0.2s;
+        color: #5d4037 !important; /* チョコレート色 */
+        border: 1px solid #d7ccc8 !important;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.05);
     }
     .oshi-btn:hover { filter: brightness(0.95); transform: translateY(-2px); }
 
-    /* リスト選択のスタイル */
     #series-checkboxes { text-align: left; padding: 10px 0; }
     .category-group { margin-bottom: 15px; border: 2px solid var(--theme-light); border-radius: 8px; padding: 15px; background: #fff; }
-    .category-title { font-weight: bold; color: var(--theme-color); margin-bottom: 12px; border-bottom: 2px dotted var(--theme-color); padding-bottom: 5px; font-size: 15px; }
+    
+    .category-title { 
+        font-weight: bold; 
+        background-color: var(--theme-color); 
+        color: #5d4037; /* チョコレート色 */
+        border: 1px solid #d7ccc8;
+        margin-bottom: 12px; 
+        padding: 8px 12px; 
+        font-size: 15px; 
+        border-radius: 6px; 
+    }
+    
     .category-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 14px; }
     @media (min-width: 500px) { .category-items { grid-template-columns: repeat(3, 1fr); } }
     .category-items label { cursor: pointer; color: #555; }
 
-    /* 予選用スタイル */
     #prelim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
     .prelim-item {
         border: 2px solid #eee; padding: 15px 10px; border-radius: 8px;
         cursor: pointer; transition: 0.2s; background-color: #fff;
         display: flex; align-items: center; justify-content: center; min-height: 50px; font-size: 14px; color: #555;
     }
-    /* 選択された時の枠線と背景をメンカラにする */
     .prelim-item.selected {
-        border-color: var(--theme-color); background-color: var(--theme-light); font-weight: bold; color: #333;
+        border-color: var(--theme-color); background-color: var(--theme-light); font-weight: bold; color: #5d4037;
     }
     
-    /* 進捗カウンター */
-    .counter-box { background-color: var(--theme-light); color: #333; padding: 10px; border-radius: 5px; font-weight: bold; margin: 10px 0; display: inline-block; font-size: 14px; border: 1px solid var(--theme-color); }
+    .counter-box { 
+        background-color: var(--theme-color) !important; 
+        color: #5d4037 !important; /* チョコレート色 */
+        border: 1px solid #d7ccc8 !important;
+        padding: 10px; border-radius: 8px; font-weight: bold; margin: 10px 0; display: inline-block; font-size: 14px; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    }
+    /* ★本戦用スタイル */
+    #battle-container {
+        display: grid;
+        grid-template-columns: 1fr 80px 1fr; 
+        gap: 15px;
+        width: 100%;
+        margin: 20px 0;
+        align-items: stretch; /* 高さを綺麗に揃える */
+    }
+    .battle-btn {
+        border: 4px solid var(--theme-color); 
+        background: #fff;
+        border-radius: 12px;
+        padding: 15px;
+        cursor: pointer;
+        font-size: clamp(14px, 4vw, 18px); /* 画面に合わせて文字サイズを最適化 */
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-word; /* 長い曲名は自動で改行 */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.06); /
+        transition: 0.2s;
+        min-height: 120px; /* ★ボタンを大きく */
+    }
+    .battle-btn:hover { background: var(--theme-color); transform: scale(1.02); }
+    .middle-col { display: flex; align-items: center; justify-content: center; }
+    .middle-btn { border: 1px solid #ddd; padding: 15px 10px; cursor: pointer; width: 100%; background: #f9f9f9; font-size: 12px; border-radius: 8px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .middle-btn:hover { background: #eee; }
 
-    /* 本戦用スタイル */
-    #mainTable { width: 100%; max-width: 500px; margin: 20px auto; border-collapse: separate; border-spacing: 5px; }
-    .battle-btn { border: 2px solid var(--theme-color); padding: 20px; cursor: pointer; width: 40%; background: #fff; border-radius: 8px; min-height: 80px; font-weight:bold; color:#444; transition: 0.2s; }
-    .battle-btn:hover { background: var(--theme-light); }
-    .middle-btn { border: 1px solid #ddd; padding: 10px; cursor: pointer; width: 20%; background: #f9f9f9; font-size: 12px; border-radius: 5px; color:#666; }
-
-    /* 結果テーブル（メンカラ連動） */
+    /* 結果テーブル */
     #capture-area { background: #fff; padding: 20px; margin-bottom: 20px; }
     .result-table { width: 90%; margin: 0 auto; border-collapse: collapse; font-size: 14px; }
-    .result-table th, .result-table td { border: 1px solid var(--theme-color); padding: 8px; color: #444; }
-    .result-table th { background-color: var(--theme-light); color: var(--theme-color); }
+    .result-table th, .result-table td { border: 1px solid #ccc; padding: 8px; color: #444; }
+    .result-table th { background-color: var(--theme-color); color: #333; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <div class="member-colors-bar"></div>
-    <h1 style="color: #555; font-size: 24px;">Hey!Say!JUMP楽曲ソート</h1>
+<h1 style="color: #555; font-size: clamp(18px, 5vw, 24px); word-break: keep-all; margin: 10px 0 20px;">Hey!Say!JUMP楽曲ソート</h1>
     
     <!-- ==================== ⓪同意と担当選択ステップ ==================== -->
     <div id="step-consent" class="step-section active">
@@ -121,15 +167,17 @@
             <span style="font-size: 12px; color: #888;">（※個人情報は一切取得しません/このサイトは非公式のファンサイトです）</span>
         </p>
         
-        <div class="oshi-grid">
-            <button class="oshi-btn" style="background:#e57373; color:#fff;" onclick="selectOshi('#e57373', '#ffebee', '山田涼介')">山田 涼介</button>
-            <button class="oshi-btn" style="background:#f06292; color:#fff;" onclick="selectOshi('#f06292', '#fce4e9', '知念侑李')">知念 侑李</button>
-            <button class="oshi-btn" style="background:#ffb74d; color:#fff;" onclick="selectOshi('#ffb74d', '#fff3e0', '有岡大貴')">有岡 大貴</button>
-            <button class="oshi-btn" style="background:#ba68c8; color:#fff;" onclick="selectOshi('#ba68c8', '#f3e5f5', '髙木雄也')">髙木 雄也</button>
-            <button class="oshi-btn" style="background:#64b5f6; color:#fff;" onclick="selectOshi('#64b5f6', '#e3f2fd', '伊野尾慧')">伊野尾 慧</button>
-            <button class="oshi-btn" style="background:#ffd54f;" onclick="selectOshi('#ffd54f', '#fffde7', '八乙女光')">八乙女 光</button>
-            <button class="oshi-btn" style="background:#81c784; color:#fff;" onclick="selectOshi('#81c784', '#e8f5e9', '薮宏太')">薮 宏太</button>
-            <button class="oshi-btn" style="background:#ffffff; border:1px solid #ccc;" onclick="selectOshi('#bdbdbd', '#f5f5f5', '非選択')">選べない</button>
+ <div class="oshi-grid">
+            <!-- ご指定のパステルカラーに変更 -->
+            <button class="oshi-btn" style="background:#ffd1d1;" onclick="selectOshi('#ffd1d1', '#fff5f5', '山田涼介')">山田 涼介</button>
+            <button class="oshi-btn" style="background:#ffd1ff;" onclick="selectOshi('#ffd1ff', '#fff5ff', '知念侑李')">知念 侑李</button>
+            <button class="oshi-btn" style="background:#ffe8d1;" onclick="selectOshi('#ffe8d1', '#fffaf5', '有岡大貴')">有岡 大貴</button>
+            <button class="oshi-btn" style="background:#e8d1ff;" onclick="selectOshi('#e8d1ff', '#f8f5ff', '髙木雄也')">髙木 雄也</button>
+            <button class="oshi-btn" style="background:#d1e8ff;" onclick="selectOshi('#d1e8ff', '#f5f9ff', '伊野尾慧')">伊野尾 慧</button>
+            <button class="oshi-btn" style="background:#ffffd1;" onclick="selectOshi('#ffffd1', '#fffff5', '八乙女光')">八乙女 光</button>
+            <button class="oshi-btn" style="background:#e8ffd1;" onclick="selectOshi('#e8ffd1', '#f8fff5', '薮宏太')">薮 宏太</button>
+            <!-- 非選択 -->
+            <button class="oshi-btn" style="background:#ffffff;" onclick="selectOshi('#e0e0e0', '#f5f5f5', '非選択')">選べない</button>
         </div>
 
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ddd;">
@@ -166,20 +214,25 @@
         <button class="btn" onclick="nextPrelim()">次へ ＞</button>
     </div>
 
-    <!-- ==================== ③本戦ステップ ==================== -->
+ <!-- ==================== ③本戦ステップ ==================== -->
     <div id="step-main" class="step-section">
         <h2>③本戦：より好きな方を選んでください</h2>
         <div id="battleNumber" style="font-size: 14px; color: #888; margin-bottom: 10px;"></div>
-        <table id="mainTable">
-            <tr>
-                <td id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></td>
-                <td class="middle-btn" onclick="if(finishFlag==0)sortList(0);">引き分け</td>
-                <td id="rightField" class="battle-btn" onclick="if(finishFlag==0)sortList(1);"></td>
-            </tr>
-        </table>
+        
+        <!-- ★テーブルを廃止し、独立した大きなボタンのレイアウトに変更 -->
+        <div id="battle-container">
+            <div id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></div>
+            
+            <div class="middle-col">
+                <div class="middle-btn" onclick="if(finishFlag==0)sortList(0);">引き分け</div>
+            </div>
+            
+            <div id="rightField" class="battle-btn" onclick="if(finishFlag==0)sortList(1);"></div>
+        </div>
+
         <button class="btn btn-gray" style="margin-top:20px;" onclick="undoSort()">＜ 一つ戻る</button>
     </div>
-    <!-- ==================== ④結果ステップ ==================== -->
+ <!-- ==================== ④結果ステップ ==================== -->
     <div id="step-result" class="step-section">
         <div id="capture-area">
             <h2>最終結果（TOP20）</h2>
@@ -402,8 +455,6 @@ function updatePrelimCounter() {
     let totalWillPass = 0;
     for(let i=0; i<blockSelections.length; i++) { totalWillPass += (blockSelections[i] ? blockSelections[i].length : 0); }
     document.getElementById("prelim-counter").innerText = `現在の通過予定: ${totalWillPass}曲 / 本戦へは最低 ${MIN_REQUIRED_SONGS}曲 必要`;
-    if(totalWillPass < MIN_REQUIRED_SONGS) { document.getElementById("prelim-counter").style.color = "#d32f2f"; document.getElementById("prelim-counter").style.backgroundColor = "#ffebee"; } 
-    else { document.getElementById("prelim-counter").style.color = "var(--theme-color)"; document.getElementById("prelim-counter").style.backgroundColor = "var(--theme-light)"; }
 }
 
 function nextPrelim() {
@@ -471,7 +522,7 @@ function undoSort() {
 }
 
 function showImage() {
-    document.getElementById("battleNumber").innerHTML = "Battle No."+numQuestion+"<br>進行度: "+Math.floor(finishSize*100/totalSize)+"% sorted.";
+    document.getElementById("battleNumber").innerHTML = "進行度: "+Math.floor(finishSize*100/totalSize)+"%";
     document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
     document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
     numQuestion++;
