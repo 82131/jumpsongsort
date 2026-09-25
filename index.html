@@ -155,14 +155,20 @@
         background: #f9f9f9; font-size: 11px; border-radius: 6px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
 
-    /* ★ランキングスタイル（スマホでも強制2列・コンパクト設計） */
+    /* ★ランキングスタイル（スマホでも強制2列・縦に1〜10、右に11〜） */
     #capture-area { background: #fff; padding: 15px 5px; margin-bottom: 20px; border-radius: 8px; }
     .ranking-list {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* ★スマホでも強制的に左右2列！ */
-        gap: 6px; /* 隙間を最小限にして縦幅を節約 */
+        grid-template-columns: repeat(2, 1fr); /* 左右2列 */
+        gap: 6px; 
         margin-top: 15px;
         text-align: left;
+        align-items: start; /* 左右の列の高さが違っても綺麗に上揃えにする */
+    }
+    .ranking-col {
+        display: flex;
+        flex-direction: column;
+        gap: 6px; /* 縦の隙間 */
     }
     
     .rank-item {
@@ -190,7 +196,7 @@
         margin-right: 6px;
     }
     .rank-song {
-        font-size: 11px; /* 2列でも曲名が入るように少し小さめ */
+        font-size: 11px; 
         font-weight: bold;
         color: #5d4037;
         word-break: break-word;
@@ -208,8 +214,8 @@
     <div id="step-consent" class="step-section active">
         <p style="font-size: 13px; text-align: left; background: #fdfdfd; border: 1px solid #eee; padding: 12px; border-radius: 8px; line-height: 1.6; color: #444;">
             このツールではランキング結果を集計しています<br>
-            集計に同意いただける方は、<strong>担当</strong>を選んでスタートしてください<br>
-            <span style="font-size: 11px; color: #888;">（※個人情報は一切取得しません/このサイトは非公式のファンサイトです）</span>
+            集計に同意いただける方は、担当を選んでスタートしてください<br>
+            <span style="font-size: 11px; color: #888;">（※個人情報は一切取得しません/非公式のファンサイトです）</span>
         </p>
         
         <div class="oshi-grid">
@@ -282,11 +288,11 @@
             <div id="resultField"></div>
         </div>
         
-        <!-- ★ボタンが消えないように縦並びのレイアウトに強化 -->
+        <!-- ★広告ブロッカー対策：aタグ(リンク)ではなく、純粋なbuttonタグに変更 -->
         <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
-            <button class="btn btn-save" style="width: 100%; max-width: 320px; margin: 0;" onclick="downloadImage()">⬇️ 結果を画像として保存</button>
-            <a href="https://x.com/intent/tweet?text=%E7%A7%81%E3%81%AEHey!Say!JUMP%E6%A5%BD%E6%9B%B2%E3%82%BD%E3%83%BC%E3%83%88%E7%B5%90%E6%9E%9C%E3%81%A7%E3%81%99%EF%BC%81%0A(%E2%80%BB%E4%BF%9D%E5%AD%98%E3%81%97%E3%81%9F%E7%94%BB%E5%83%8F%E3%82%92%E4%B8%80%E7%B7%92%E3%81%AB%E6%B7%BB%E4%BB%98%E3%81%97%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84)%0A%0A%23JUMP%E6%A5%BD%E6%9B%B2%E3%82%BD%E3%83%BC%E3%83%88" target="_blank" rel="noopener noreferrer" class="btn btn-sns" style="width: 100%; max-width: 320px; margin: 0; display: flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; color: #5d4037 !important;">𝕏 画像を添付してポスト</a>
-            <button class="btn btn-gray" style="width: 100%; max-width: 320px; margin: 0; margin-top: 5px;" onclick="location.reload()">最初からやり直す</button>
+            <button class="btn" style="background-color: #FFCC80; width: 100%; max-width: 320px; margin: 0;" onclick="downloadImage()">⬇️ 結果を画像として保存</button>
+            <button class="btn" style="background-color: #81D4FA; width: 100%; max-width: 320px; margin: 0;" onclick="postToSNS()">𝕏 画像を添付してポスト</button>
+            <button class="btn btn-gray" style="width: 100%; max-width: 320px; margin: 0;" onclick="location.reload()">最初からやり直す</button>
         </div>
     </div>
 </div>
@@ -522,9 +528,12 @@ function showImage() {
     numQuestion++;
 }
 
+// ★ランキングを「左列(1〜10位)」「右列(11〜20位)」に分割して表示する
 function showResult() {
     showStep("step-result");
-    var str = "<div class='ranking-list'>";
+    
+    var leftHTML = "";
+    var rightHTML = "";
     var top10Songs = [];
     var ranking = 1, sameRank = 1;
     
@@ -532,10 +541,18 @@ function showResult() {
         if (ranking > 20) break;
         var songName = namMember[lstMember[0][i]];
         
-        str += `<div class="rank-item">
-                    <div class="rank-num">${ranking}</div>
-                    <div class="rank-song">${songName}</div>
-                </div>`;
+        // 1曲分のHTML
+        var itemStr = `<div class="rank-item">
+                           <div class="rank-num">${ranking}</div>
+                           <div class="rank-song">${songName}</div>
+                       </div>`;
+                       
+        // 10位以内なら左列の箱へ、11位以降なら右列の箱へ振り分け
+        if (ranking <= 10) {
+            leftHTML += itemStr;
+        } else {
+            rightHTML += itemStr;
+        }
                 
         if (top10Songs.length < 10) { top10Songs.push(songName); }
         
@@ -544,7 +561,13 @@ function showResult() {
             else { ranking += sameRank; sameRank = 1; } 
         }
     }
-    str += "</div>";
+    
+    // 左右の箱を合体させて画面に出力
+    var str = `<div class="ranking-list">
+                   <div class="ranking-col">${leftHTML}</div>
+                   <div class="ranking-col">${rightHTML}</div>
+               </div>`;
+               
     document.getElementById("resultField").innerHTML = str;
 
     if(isConsentGiven) {
@@ -579,11 +602,24 @@ function downloadImage() {
         
         document.getElementById("capture-area").innerHTML = `
             <p style="color:#e57373; font-weight:bold; font-size:13px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
-                📸 スマホの方は、下の画像を長押しして「画像を保存」してください！
+                スマホの方は下の画像を長押しして「画像を保存」してください
             </p>
             <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
         `;
     });
+}
+// ★広告ブロッカー・ポップアップブロックを完全に回避してXに飛ぶ最強の裏技関数
+function postToSNS() {
+    var text = encodeURIComponent("私のHey!Say!JUMP好き曲20選です！\n(※保存した画像を一緒に添付してください)\n\n#JUMP好き曲20選\n");
+    var url = "https://x.com/intent/tweet?text=" + text;
+    
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 </script>
 </body>
