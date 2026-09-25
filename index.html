@@ -98,6 +98,7 @@
     @media (min-width: 500px) { .category-items { grid-template-columns: repeat(3, 1fr); } }
     .category-items label { cursor: pointer; color: #555; }
 
+/* 予選用スタイル */
     #prelim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
     .prelim-item {
         border: 2px solid #eee; padding: 15px 10px; border-radius: 8px;
@@ -105,52 +106,59 @@
         display: flex; align-items: center; justify-content: center; min-height: 50px; font-size: 14px; color: #555;
     }
     .prelim-item.selected {
-        border-color: var(--theme-color); background-color: var(--theme-light); font-weight: bold; color: #5d4037;
+        border-color: var(--theme-color); background-color: var(--theme-light); color: #5d4037; /* ★太字になる処理を削除 */
     }
     
     .counter-box { 
         background-color: var(--theme-color) !important; 
-        color: #5d4037 !important; /* チョコレート色 */
+        color: #5d4037 !important; 
         border: 1px solid #d7ccc8 !important;
         padding: 10px; border-radius: 8px; font-weight: bold; margin: 10px 0; display: inline-block; font-size: 14px; 
         box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
 
-    /* ★本戦用スタイル */
+    /* ★本戦用スタイル（引き分けを下に配置し、左右ボタンを最大化） */
     #battle-container {
         display: grid;
-        grid-template-columns: 1fr 80px 1fr; 
-        gap: 15px;
+        grid-template-columns: 1fr 1fr; /* 2列に変更 */
+        gap: 10px; /* 隙間を狭く */
         width: 100%;
         margin: 20px 0;
-        align-items: stretch; /* 高さを綺麗に揃える */
     }
     .battle-btn {
         border: 4px solid var(--theme-color); 
         background: #fff;
         border-radius: 12px;
-        padding: 15px;
+        padding: 10px;
         cursor: pointer;
-        font-size: clamp(14px, 4vw, 18px); /* 画面に合わせて文字サイズを最適化 */
+        font-size: clamp(14px, 4vw, 18px); 
         font-weight: bold;
         color: #333;
         display: flex;
         align-items: center;
         justify-content: center;
-        word-break: break-word; /* 長い曲名は自動で改行 */
+        word-break: break-word; 
         box-shadow: 0 4px 8px rgba(0,0,0,0.06); 
         transition: 0.2s;
-        min-height: 120px; /* ★ボタンを大きく */
+        min-height: 120px; 
     }
     .battle-btn:hover { background: var(--theme-color); transform: scale(1.02); }
-    .middle-col { display: flex; align-items: center; justify-content: center; }
-    .middle-btn { border: 1px solid #ddd; padding: 15px 10px; cursor: pointer; width: 100%; background: #f9f9f9; font-size: 12px; border-radius: 8px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .middle-col { 
+        grid-column: span 2; /* 2列分ぶち抜いて下に配置 */
+        display: flex; align-items: center; justify-content: center; 
+        margin-top: 5px;
+    }
+    .middle-btn { 
+        border: 1px solid #ddd; padding: 12px; cursor: pointer; width: 60%; 
+        background: #f9f9f9; font-size: 14px; border-radius: 8px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    }
     .middle-btn:hover { background: #eee; }
 
-    /* 結果テーブル */
+    /* 結果テーブル（2列用に調整） */
     #capture-area { background: #fff; padding: 20px; margin-bottom: 20px; }
-    .result-table { width: 90%; margin: 0 auto; border-collapse: collapse; font-size: 14px; }
-    .result-table th, .result-table td { border: 1px solid #ccc; padding: 8px; color: #444; }
+    .result-table { width: 100%; margin: 0 auto; border-collapse: collapse; font-size: 11px; } /* スマホ向けに文字を小さく */
+    @media (min-width: 500px) { .result-table { font-size: 14px; } }
+    .result-table th, .result-table td { border: 1px solid #ccc; padding: 6px 4px; color: #444; word-break: break-word; }
     .result-table th { background-color: var(--theme-color); color: #333; }
 </style>
 </head>
@@ -515,23 +523,48 @@ function showImage() {
 
 function showResult() {
     showStep("step-result");
-    var ranking = 1, sameRank = 1, str = "";
+    var str = "<table class='result-table'><tr><th style='width:35px;'>順位</th><th>曲名</th><th style='width:35px;'>順位</th><th>曲名</th></tr>";
     var top10Songs = [];
     
-    str += "<table class='result-table'><tr><th style='width:50px;'>順位</th><th>曲名</th></tr>";
+    // ① まず順位データを整理する
+    var rankList = [];
+    var ranking = 1, sameRank = 1;
     for (var i = 0; i < namMember.length; i++) {
         if (ranking > 20) break;
-        var songName = namMember[lstMember[0][i]];
-        str += "<tr><td style='text-align:center; font-weight:bold;'>" + ranking + "</td><td>" + songName + "</td></tr>";
-        if (top10Songs.length < 10) { top10Songs.push(songName); }
-        if (i < namMember.length - 1) { if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++; else { ranking += sameRank; sameRank = 1; } }
+        rankList.push({ rank: ranking, name: namMember[lstMember[0][i]] });
+        if (i < namMember.length - 1) { 
+            if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++; 
+            else { ranking += sameRank; sameRank = 1; } 
+        }
+    }
+    
+    // ② フォーム送信用にTop10を抽出
+    for(var i = 0; i < 10; i++) {
+        top10Songs.push(rankList[i] ? rankList[i].name : "データなし");
+    }
+
+    // ③ 左右2列（1~10位 と 11~20位）でテーブルを作成
+    for (var i = 0; i < 10; i++) {
+        str += "<tr>";
+        // 左列（1〜10位）
+        if (rankList[i]) {
+            str += "<td style='text-align:center; font-weight:bold;'>" + rankList[i].rank + "</td><td>" + rankList[i].name + "</td>";
+        } else {
+            str += "<td></td><td></td>";
+        }
+        // 右列（11〜20位）
+        if (rankList[i + 10]) {
+            str += "<td style='text-align:center; font-weight:bold;'>" + rankList[i + 10].rank + "</td><td>" + rankList[i + 10].name + "</td>";
+        } else {
+            str += "<td></td><td></td>";
+        }
+        str += "</tr>";
     }
     str += "</table>";
     document.getElementById("resultField").innerHTML = str;
 
     // ★同意した場合のみ、自動で送信処理を行う
     if(isConsentGiven) {
-        while(top10Songs.length < 10) { top10Songs.push("データなし"); }
         var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe2ftmvqTI6eGHKEXG3bUnAmYYXrM5O8ctekXqLbmamZB3uhg/formResponse';
         var formData = new FormData();
         formData.append('entry.1121843297', top10Songs[0]); 
@@ -553,13 +586,22 @@ function showResult() {
 function downloadImage() {
     var element = document.getElementById("capture-area");
     html2canvas(element, { scale: 2 }).then(canvas => {
-        var link = document.createElement("a"); link.download = "JUMP_sort_result.png";
-        link.href = canvas.toDataURL("image/png"); link.click();
+        var imgData = canvas.toDataURL("image/png");
+        
+        // PC用の自動ダウンロード処理
+        var link = document.createElement("a"); 
+        link.download = "JUMP_sort_result.png";
+        link.href = imgData; 
+        link.click();
+        
+        // スマホ用に画面にも画像を表示して長押し保存を促す
+        document.getElementById("capture-area").innerHTML = `
+            <p style="color:#e57373; font-weight:bold; font-size:14px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
+                📸 スマホの方は、下の画像を長押しして「画像を保存」してください！
+            </p>
+            <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+        `;
     });
-}
-function shareX() {
-    var text = encodeURIComponent("私のHey!Say!JUMP楽曲ソート結果です！\n(※先に保存した画像を一緒に添付してください)\n\n#JUMP楽曲ソート\n");
-    window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
 }
 </script>
 </body>
