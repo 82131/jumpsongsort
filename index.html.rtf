@@ -1,0 +1,388 @@
+{\rtf1\ansi\ansicpg932\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="ja">\
+<head>\
+<meta charset="UTF-8">\
+<meta name="viewport" content="width=device-width, initial-scale=1.0">\
+<title>Hey!Say!JUMP\uc0\u27005 \u26354 \u12477 \u12540 \u12488 \u65288 \u20104 \u36984 \u8594 \u26412 \u25126 \u65289 </title>\
+<style>\
+    /* \uc0\u20840 \u20307 \u12398 \u12473 \u12479 \u12452 \u12523  */\
+    body \{\
+        font-family: '\uc0\u12513 \u12452 \u12522 \u12458 ', sans-serif;\
+        text-align: center;\
+        color: #333;\
+        background-color: #fafafa;\
+        margin: 0;\
+        padding: 20px;\
+    \}\
+    .container \{\
+        max-width: 650px;\
+        margin: 0 auto;\
+        background: #fff;\
+        padding: 20px;\
+        border-radius: 8px;\
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);\
+    \}\
+    /* \uc0\u21508 \u12473 \u12486 \u12483 \u12503 \u12398 \u34920 \u31034 \u20999 \u12426 \u26367 \u12360 \u29992  */\
+    .step-section \{ display: none; \}\
+    .step-section.active \{ display: block; \}\
+    \
+    h2 \{ font-size: 18px; color: #555; border-bottom: 2px solid #ccc; padding-bottom: 5px; \}\
+    .btn \{\
+        padding: 10px 20px; font-size: 16px; font-weight: bold;\
+        background-color: #ff6b6b; color: white; border: none;\
+        border-radius: 5px; cursor: pointer; margin-top: 15px;\
+    \}\
+    .btn:hover \{ background-color: #ff4c4c; \}\
+\
+    /* \uc0\u20104 \u36984 \u29992 \u12473 \u12479 \u12452 \u12523  */\
+    #prelim-grid \{\
+        display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;\
+    \}\
+    .prelim-item \{\
+        border: 2px solid #ddd; padding: 20px 10px; border-radius: 8px;\
+        cursor: pointer; transition: 0.2s; background-color: #f9f9f9;\
+        display: flex; align-items: center; justify-content: center; min-height: 60px;\
+    \}\
+    .prelim-item.selected \{\
+        border-color: #ff6b6b; background-color: #ffe8e8; font-weight: bold;\
+    \}\
+    .prelim-status \{ margin-top: 15px; font-size: 14px; color: #666; \}\
+\
+    /* \uc0\u26412 \u25126 \u29992 \u12473 \u12479 \u12452 \u12523 \u65288 \u20803 \u12469 \u12452 \u12488 \u12398 \u12487 \u12470 \u12452 \u12531 \u12434 \u36367 \u35186 \u65289  */\
+    #mainTable \{\
+        width: 100%; max-width: 500px; margin: 20px auto; border-collapse: separate; border-spacing: 5px;\
+    \}\
+    .battle-btn \{\
+        border: 2px solid #808080; padding: 20px; cursor: pointer;\
+        width: 40%; background: #fff; border-radius: 5px; min-height: 80px;\
+    \}\
+    .battle-btn:hover \{ background: #f0f0f0; \}\
+    .middle-btn \{\
+        border: 1px solid #c8c8c8; padding: 10px; cursor: pointer;\
+        width: 20%; background: #fff; font-size: 12px; border-radius: 5px;\
+    \}\
+\
+    /* \uc0\u32080 \u26524 \u12486 \u12540 \u12502 \u12523  */\
+    .result-table \{\
+        width: 80%; margin: 20px auto; border-collapse: collapse; font-size: 14px;\
+    \}\
+    .result-table th, .result-table td \{ border: 1px solid #808080; padding: 5px; \}\
+    .result-table th \{ background-color: #808080; color: #fff; \}\
+</style>\
+</head>\
+<body>\
+\
+<div class="container">\
+    <h1>Hey!Say!JUMP\uc0\u27005 \u26354 \u12477 \u12540 \u12488 </h1>\
+    \
+    <!-- ==================== \uc0\u9312 \u24180 \u20195 \u36984 \u25246 \u12473 \u12486 \u12483 \u12503  ==================== -->\
+    <div id="step-setup" class="step-section active">\
+        <h2>\uc0\u9312 \u36938 \u12403 \u12383 \u12356 \u24180 \u20195 \u12434 \u36984 \u25246 \u12375 \u12390 \u12473 \u12479 \u12540 \u12488 </h2>\
+        <div id="series-checkboxes" style="text-align: left; padding: 0 20px;">\
+            <!-- JS\uc0\u12391 \u12481 \u12455 \u12483 \u12463 \u12508 \u12483 \u12463 \u12473 \u12434 \u29983 \u25104 \u12375 \u12414 \u12377  -->\
+        </div>\
+        <button class="btn" onclick="startPreliminary()">\uc0\u20104 \u36984 \u12473 \u12479 \u12540 \u12488 \u65281 </button>\
+    </div>\
+\
+    <!-- ==================== \uc0\u9313 \u20104 \u36984 \u12473 \u12486 \u12483 \u12503  ==================== -->\
+    <div id="step-preliminary" class="step-section">\
+        <h2>\uc0\u9313 \u20104 \u36984 \u65306 4\u26354 \u12398 \u20013 \u12363 \u12425 \u12304 \u26368 \u22823 3\u26354 \u12305 \u12434 \u36984 \u12435 \u12391 \u12367 \u12384 \u12373 \u12356 </h2>\
+        <p style="font-size:12px; color:#666;">\uc0\u65288 \u30693 \u12425 \u12394 \u12356 \u26354 \u12400 \u12363 \u12426 \u12394 \u12425 0\u26354 \u12391 \u12418 OK\u12391 \u12377 \u65289 </p>\
+        \
+        <div id="prelim-grid">\
+            <div class="prelim-item" onclick="togglePrelim(0)" id="p-item-0">\uc0\u26354 1</div>\
+            <div class="prelim-item" onclick="togglePrelim(1)" id="p-item-1">\uc0\u26354 2</div>\
+            <div class="prelim-item" onclick="togglePrelim(2)" id="p-item-2">\uc0\u26354 3</div>\
+            <div class="prelim-item" onclick="togglePrelim(3)" id="p-item-3">\uc0\u26354 4</div>\
+        </div>\
+        \
+        <div class="prelim-status" id="prelim-progress">\uc0\u20104 \u36984 \u12464 \u12523 \u12540 \u12503 : 1 / 10</div>\
+        <button class="btn" onclick="nextPrelim()">\uc0\u27425 \u12408  \u65310 </button>\
+    </div>\
+\
+    <!-- ==================== \uc0\u9314 \u26412 \u25126 \u12473 \u12486 \u12483 \u12503  ==================== -->\
+    <div id="step-main" class="step-section">\
+        <h2>\uc0\u9314 \u26412 \u25126 \u65306 \u12424 \u12426 \u22909 \u12365 \u12394 \u26041 \u12434 \u36984 \u12435 \u12391 \u12367 \u12384 \u12373 \u12356 </h2>\
+        <div id="battleNumber" style="font-size: 14px; color: #555; margin-bottom: 10px;"></div>\
+        <table id="mainTable">\
+            <tr>\
+                <td id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></td>\
+                <td class="middle-btn" onclick="if(finishFlag==0)sortList(0);">\uc0\u24341 \u12365 \u20998 \u12369 </td>\
+                <td id="rightField" class="battle-btn" onclick="if(finishFlag==0)sortList(1);"></td>\
+            </tr>\
+            <tr>\
+                <td></td>\
+                <td class="middle-btn" onclick="if(finishFlag==0)sortList(0);">\uc0\u12393 \u12385 \u12425 \u12418 <br>\u30693 \u12425 \u12394 \u12356 </td>\
+                <td></td>\
+            </tr>\
+        </table>\
+    </div>\
+\
+    <!-- ==================== \uc0\u9315 \u32080 \u26524 \u12473 \u12486 \u12483 \u12503  ==================== -->\
+    <div id="step-result" class="step-section">\
+        <h2>\uc0\u26368 \u32066 \u32080 \u26524 \u65288 TOP20\u65289 </h2>\
+        <div id="resultField"></div>\
+        <button class="btn" onclick="location.reload()">\uc0\u26368 \u21021 \u12363 \u12425 \u12420 \u12426 \u30452 \u12377 </button>\
+    </div>\
+</div>\
+\
+<script>\
+// ==========================================\
+// \uc0\u12487 \u12540 \u12479 \u12398 \u23450 \u32681 \
+// ==========================================\
+var namMemberSeries = \{\};\
+var seriesList = ["1","2","3","4","5","6","7","8","9","10","11","12"];\
+var seriesTitle = ["2007-2012","2013-2015","2016-2018","2018-2019","2020-2022","2023-2024","2025-2026","Hey! Say! 7","Hey! Say! BEST","\uc0\u12477 \u12525 ","\u12518 \u12491 \u12483 \u12488 ","\u12411 \u12363 "];\
+\
+// \uc0\u9733 \u9733 \u9733  \u12371 \u12371 \u12395 \u20803 \u12398  namMemberSeries["1"] \u65374  ["12"] \u12398 \u37197 \u21015 \u12434 \u36028 \u12426 \u20184 \u12369 \u12390 \u12367 \u12384 \u12373 \u12356  \u9733 \u9733 \u9733 \
+namMemberSeries["1"] = ["Ultra Music Power","Star Time","Too Shy","Dreams come true"]; // \uc0\u8251 \u12486 \u12473 \u12488 \u29992 \u12480 \u12511 \u12540 \
+namMemberSeries["2"] = ["Come On A My House","BOUNCE","New Hope","Ride With Me"]; // \uc0\u8251 \u12486 \u12473 \u12488 \u29992 \u12480 \u12511 \u12540 \
+// ...\uc0\u65288 \u30465 \u30053 \u65289 ...\
+\
+// ==========================================\
+// \uc0\u20104 \u36984 \u29992 \u12398 \u22793 \u25968 \
+// ==========================================\
+var candidateSongs = []; // \uc0\u36984 \u25246 \u12373 \u12428 \u12383 \u20840 \u26354 \
+var prelimBlocks = [];   // 4\uc0\u26354 \u12378 \u12388 \u12395 \u20998 \u12369 \u12383 \u37197 \u21015 \
+var currentBlockIdx = 0; // \uc0\u29694 \u22312 \u20309 \u12464 \u12523 \u12540 \u12503 \u30446 \u12363 \
+var selectedInBlock = [];// \uc0\u29694 \u22312 \u12398 \u30011 \u38754 \u12391 \u36984 \u25246 \u20013 \u12398 \u26354 \u12452 \u12531 \u12487 \u12483 \u12463 \u12473 \u65288 0\u12316 3\u65289 \
+var survivingSongs = []; // \uc0\u20104 \u36984 \u12434 \u36890 \u36942 \u12375 \u12383 \u26354 \
+const MIN_REQUIRED_SONGS = 8; // \uc0\u9733 \u26412 \u25126 \u12395 \u36914 \u12416 \u12383 \u12417 \u12398 \u26368 \u20302 \u26354 \u25968 \u65288 \u33258 \u30001 \u12395 \u35519 \u25972 \u12375 \u12390 \u12367 \u12384 \u12373 \u12356 \u65289 \
+\
+// ==========================================\
+// \uc0\u21021 \u26399 \u21270 \u12539 \u30011 \u38754 \u20999 \u12426 \u26367 \u12360 \
+// ==========================================\
+window.onload = function() \{\
+    var cbHTML = "";\
+    for (var i = 0; i < seriesList.length; i++) \{\
+        var checked = (i === 0) ? "checked" : "";\
+        cbHTML += `<label style="display:inline-block; width:45%; margin-bottom:5px;">\
+                   <input type="checkbox" name="s1" value="$\{seriesList[i]\}" $\{checked\}> \
+                   $\{seriesTitle[i]\}\
+                   </label>`;\
+    \}\
+    document.getElementById("series-checkboxes").innerHTML = cbHTML;\
+\};\
+\
+function showStep(stepId) \{\
+    var steps = document.querySelectorAll('.step-section');\
+    steps.forEach(s => s.classList.remove('active'));\
+    document.getElementById(stepId).classList.add('active');\
+\}\
+\
+// \uc0\u37197 \u21015 \u12471 \u12515 \u12483 \u12501 \u12523 \u29992 \
+Array.prototype.shuffle = function() \{\
+    for (let i = this.length - 1; i > 0; i--) \{\
+        const j = Math.floor(Math.random() * (i + 1));\
+        [this[i], this[j]] = [this[j], this[i]];\
+    \}\
+    return this;\
+\}\
+\
+// ==========================================\
+// \uc0\u20104 \u36984 \u12398 \u20966 \u29702 \
+// ==========================================\
+function startPreliminary() \{\
+    candidateSongs = [];\
+    var checkboxes = document.getElementsByName("s1");\
+    for (var i = 0; i < checkboxes.length; i++) \{\
+        if(checkboxes[i].checked && namMemberSeries[checkboxes[i].value])\{\
+            candidateSongs = candidateSongs.concat(namMemberSeries[checkboxes[i].value]);\
+        \}\
+    \}\
+    \
+    if(candidateSongs.length === 0) \{\
+        alert("\uc0\u26368 \u20302 1\u12388 \u12398 \u24180 \u20195 \u12434 \u36984 \u25246 \u12375 \u12390 \u12367 \u12384 \u12373 \u12356 \u12290 "); return;\
+    \}\
+\
+    candidateSongs.shuffle(); // \uc0\u20840 \u26354 \u12434 \u12471 \u12515 \u12483 \u12501 \u12523 \
+    prelimBlocks = [];\
+    survivingSongs = [];\
+    \
+    // 4\uc0\u26354 \u12378 \u12388 \u12464 \u12523 \u12540 \u12503 \u21270 \
+    for(let i=0; i < candidateSongs.length; i+=4) \{\
+        prelimBlocks.push(candidateSongs.slice(i, i+4));\
+    \}\
+\
+    currentBlockIdx = 0;\
+    renderPrelimBlock();\
+    showStep("step-preliminary");\
+\}\
+\
+function renderPrelimBlock() \{\
+    selectedInBlock = [];\
+    var currentSongs = prelimBlocks[currentBlockIdx];\
+    \
+    for(let i=0; i<4; i++) \{\
+        let el = document.getElementById("p-item-" + i);\
+        el.className = "prelim-item"; // \uc0\u36984 \u25246 \u29366 \u24907 \u12434 \u12522 \u12475 \u12483 \u12488 \
+        if (currentSongs[i]) \{\
+            el.innerHTML = currentSongs[i];\
+            el.style.display = "flex";\
+        \} else \{\
+            el.style.display = "none"; // \uc0\u31471 \u25968 \u12391 4\u26354 \u26410 \u28288 \u12398 \u22580 \u21512 \u38560 \u12377 \
+        \}\
+    \}\
+    document.getElementById("prelim-progress").innerHTML = \
+        `\uc0\u20104 \u36984 \u12464 \u12523 \u12540 \u12503 : $\{currentBlockIdx + 1\} / $\{prelimBlocks.length\} \u65288 \u29694 \u22312 \u36890 \u36942 : $\{survivingSongs.length\}\u26354 \u65289 `;\
+\}\
+\
+function togglePrelim(index) \{\
+    if (!prelimBlocks[currentBlockIdx][index]) return; // \uc0\u26354 \u12364 \u12394 \u12356 \u22580 \u25152 \u12399 \u28961 \u35222 \
+    \
+    let el = document.getElementById("p-item-" + index);\
+    let idxPos = selectedInBlock.indexOf(index);\
+    \
+    if(idxPos !== -1) \{\
+        selectedInBlock.splice(idxPos, 1);\
+        el.classList.remove("selected");\
+    \} else \{\
+        if(selectedInBlock.length >= 3) \{\
+            alert("\uc0\u36984 \u12409 \u12427 \u12398 \u12399 3\u26354 \u12414 \u12391 \u12391 \u12377 \u65281 ");\
+            return;\
+        \}\
+        selectedInBlock.push(index);\
+        el.classList.add("selected");\
+    \}\
+\}\
+\
+function nextPrelim() \{\
+    // \uc0\u36984 \u25246 \u12373 \u12428 \u12383 \u26354 \u12434 \u36890 \u36942 \u12522 \u12473 \u12488 \u12395 \u36861 \u21152 \
+    let currentSongs = prelimBlocks[currentBlockIdx];\
+    for(let i=0; i<selectedInBlock.length; i++) \{\
+        survivingSongs.push(currentSongs[selectedInBlock[i]]);\
+    \}\
+\
+    currentBlockIdx++;\
+    \
+    if(currentBlockIdx < prelimBlocks.length) \{\
+        renderPrelimBlock(); // \uc0\u27425 \u12398 \u12464 \u12523 \u12540 \u12503 \u12434 \u34920 \u31034 \
+    \} else \{\
+        // \uc0\u20104 \u36984 \u32066 \u20102 \u12289 \u26412 \u25126 \u12408 \u34892 \u12369 \u12427 \u12363 \u12481 \u12455 \u12483 \u12463 \
+        if(survivingSongs.length < MIN_REQUIRED_SONGS) \{\
+            alert(`\uc0\u26412 \u25126 \u12395 \u36914 \u12416 \u12383 \u12417 \u12398 \u26368 \u20302 \u26354 \u25968 \u65288 $\{MIN_REQUIRED_SONGS\}\u26354 \u65289 \u12395 \u36948 \u12375 \u12414 \u12379 \u12435 \u12391 \u12375 \u12383 \u12290 \u65288 \u29694 \u22312 : $\{survivingSongs.length\}\u26354 \u65289 \\n\u12418 \u12358 \u19968 \u24230 \u26465 \u20214 \u12434 \u35211 \u30452 \u12375 \u12390 \u26368 \u21021 \u12363 \u12425 \u12420 \u12426 \u30452 \u12375 \u12390 \u12367 \u12384 \u12373 \u12356 \u12290 `);\
+            showStep("step-setup");\
+        \} else \{\
+            startMainSort(); // \uc0\u26412 \u25126 \u12408 \u65281 \
+        \}\
+    \}\
+\}\
+\
+// ==========================================\
+// \uc0\u26412 \u25126 \u65288 \u12510 \u12540 \u12472 \u12477 \u12540 \u12488 \u65289 \u12398 \u20966 \u29702  \u8251 \u20803 \u12398 \u12525 \u12472 \u12483 \u12463 \u12434 \u27969 \u29992 \
+// ==========================================\
+var namMember = [];\
+var lstMember = [], parent = [], equal = [], rec = [];\
+var cmp1, cmp2, head1, head2, nrec;\
+var numQuestion, totalSize, finishSize, finishFlag;\
+\
+function startMainSort() \{\
+    namMember = survivingSongs.slice(); // \uc0\u20104 \u36984 \u36890 \u36942 \u26354 \u12434 \u12475 \u12483 \u12488 \
+    namMember.shuffle();\
+\
+    var n = 0, mid, i;\
+    lstMember = []; parent = []; equal = []; rec = [];\
+    \
+    lstMember[n] = [];\
+    for (i=0; i<namMember.length; i++) lstMember[n][i] = i;\
+    \
+    parent[n] = -1; totalSize = 0; n++;\
+\
+    for (i=0; i<lstMember.length; i++) \{\
+        if(lstMember[i].length>=2) \{\
+            mid = Math.ceil(lstMember[i].length/2);\
+            lstMember[n] = lstMember[i].slice(0,mid);\
+            totalSize += lstMember[n].length; parent[n] = i; n++;\
+            lstMember[n] = lstMember[i].slice(mid,lstMember[i].length);\
+            totalSize += lstMember[n].length; parent[n] = i; n++;\
+        \}\
+    \}\
+\
+    for (i=0; i<namMember.length; i++) rec[i] = 0;\
+    nrec = 0;\
+    for (i=0; i<=namMember.length; i++) equal[i] = -1;\
+\
+    cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;\
+    head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0; finishFlag = 0;\
+\
+    showStep("step-main");\
+    showImage();\
+\}\
+\
+function sortList(flag)\{\
+    var i, str;\
+    if (flag<0) \{\
+        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+    \} else if (flag>0) \{\
+        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+    \} else \{\
+        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+        equal[rec[nrec-1]] = lstMember[cmp2][head2];\
+        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;\
+        while (equal[rec[nrec-1]]!=-1) \{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+    \}\
+\
+    // \uc0\u19978 \u20301 20\u20301 \u12364 \u27770 \u12414 \u12387 \u12383 \u12425 \u32066 \u20102 \u12377 \u12427 \u12501 \u12521 \u12464 \
+    if (parent[cmp1] == 0 && nrec >= 20) \{\
+        for (i = 0; i < nrec; i++) lstMember[0][i] = rec[i];\
+        cmp1 = -1; finishSize = totalSize;\
+    \}\
+\
+    if (cmp1 >= 0) \{\
+        if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) \{\
+            while (head1<lstMember[cmp1].length)\{ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; \}\
+        \} else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) \{\
+            while (head2<lstMember[cmp2].length)\{ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; \}\
+        \}\
+        if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) \{\
+            for (i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) lstMember[parent[cmp1]][i] = rec[i];\
+            lstMember.pop(); lstMember.pop(); cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;\
+            if (head1==0 && head2==0) \{ for (i=0; i<namMember.length; i++) rec[i] = 0; nrec = 0; \}\
+        \}\
+    \}\
+\
+    if (cmp1<0) \{\
+        showResult();\
+        finishFlag = 1;\
+    \} else \{\
+        showImage();\
+    \}\
+\}\
+\
+function showImage() \{\
+    var str0 = "Battle No."+numQuestion+"<br>\uc0\u36914 \u34892 \u24230 : "+Math.floor(finishSize*100/totalSize)+"% sorted.";\
+    document.getElementById("battleNumber").innerHTML = str0;\
+    document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];\
+    document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];\
+    numQuestion++;\
+\}\
+\
+function showResult() \{\
+    showStep("step-result");\
+    var ranking = 1, sameRank = 1, str = "";\
+    \
+    str += "<table class='result-table'><tr><th>\uc0\u38918 \u20301 </th><th>\u26354 \u21517 </th></tr>";\
+    for (var i = 0; i < namMember.length; i++) \{\
+        if (ranking > 20) break;\
+        str += "<tr><td style='text-align:center;'>" + ranking + "</td><td>" + namMember[lstMember[0][i]] + "</td></tr>";\
+        if (i < namMember.length - 1) \{\
+            if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++;\
+            else \{ ranking += sameRank; sameRank = 1; \}\
+        \}\
+    \}\
+    str += "</table>";\
+    document.getElementById("resultField").innerHTML = str;\
+\}\
+</script>\
+</body>\
+</html>}
