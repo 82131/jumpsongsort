@@ -196,7 +196,7 @@
         margin-right: 6px;
     }
     .rank-song {
-        font-size: 11px; 
+        font-size: 11px; /* 2列でも曲名が入るように少し小さめ */
         font-weight: bold;
         color: #5d4037;
         word-break: break-word;
@@ -214,8 +214,8 @@
     <div id="step-consent" class="step-section active">
         <p style="font-size: 13px; text-align: left; background: #fdfdfd; border: 1px solid #eee; padding: 12px; border-radius: 8px; line-height: 1.6; color: #444;">
             このツールではランキング結果を集計しています<br>
-            集計に同意いただける方は、担当を選んでスタートしてください<br>
-            <span style="font-size: 11px; color: #888;">（※個人情報は一切取得しません/非公式のファンサイトです）</span>
+            集計に同意いただける方は、<strong>担当</strong>を選んでスタートしてください<br>
+            <span style="font-size: 11px; color: #888;">（※個人情報は一切取得しません/このサイトは非公式のファンサイトです）</span>
         </p>
         
         <div class="oshi-grid">
@@ -234,14 +234,19 @@
         </div>
     </div>
 
-    <!-- ==================== ①リスト選択ステップ ==================== -->
+ <!-- ==================== ①リスト選択ステップ ==================== -->
     <div id="step-setup" class="step-section">
         <h2>①遊びたいリストを選択してスタート</h2>
         <p style="font-size:12px; color:#e57373; font-weight:bold; margin-bottom:5px;">※リスト間で重複している曲は自動で1つにまとめられます</p>
+        
+        <!-- ★追加：全曲選択ボタン -->
+        <div style="text-align: right; margin-bottom: 5px;">
+            <button style="background: var(--theme-light); border: 2px solid var(--theme-color); color: #5d4037; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" onclick="selectAllMain()">全曲を選択</button>
+        </div>
+
         <div id="series-checkboxes"></div>
         <button class="btn" onclick="startPreliminary()">予選スタート！</button>
     </div>
-
     <!-- ==================== ②予選ステップ ==================== -->
     <div id="step-preliminary" class="step-section">
         <h2>②予選：8曲の中から【最大4曲】を選択</h2>
@@ -321,7 +326,7 @@ var namMemberSeries = {};
 var seriesList = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"];
 var seriesTitle = [
     "シングル07〜11","シングル12〜16","シングル17〜21","シングル22〜26",
-    "JUMP NO.1", "JUMP WORLD", "smart", "JUMPing CAR", "DEAR.", "Hey! Say! JUMP 2007-2017 I/O",
+    "JUMP NO.1", "JUMP WORLD", "smart", "JUMPing CAR", "DEAR.", "2007-2017 I/O",
     "SENSE or LOVE", "PARADE", "Fab! -Music speaks.-", "FILMUSIC!", "PULL UP!","H⁺","S say",
     "Hey! Say! 7", "Hey! Say! BEST", "ソロ", "ユニット"
 ];
@@ -432,6 +437,19 @@ function startPreliminary() {
     candidateSongs.shuffle(); prelimBlocks = []; survivingSongs = []; blockSelections = [];
     for(let i=0; i < candidateSongs.length; i+=8) { prelimBlocks.push(candidateSongs.slice(i, i+8)); }
     currentBlockIdx = 0; renderPrelimBlock(); showStep("step-preliminary");
+}
+
+function selectAllMain() {
+    var checkboxes = document.getElementsByName("s1");
+    for (var i = 0; i < checkboxes.length; i++) {
+        var val = parseInt(checkboxes[i].value);
+        // 1〜17がシングル・アルバム、18〜21がソロ・ユニット
+        if (val >= 1 && val <= 17) {
+            checkboxes[i].checked = true; // チェックを入れる
+        } else {
+            checkboxes[i].checked = false; // ソロ・ユニットはチェックを外す
+        }
+    }
 }
 
 function renderPrelimBlock() {
@@ -602,17 +620,25 @@ function downloadImage() {
         
         document.getElementById("capture-area").innerHTML = `
             <p style="color:#e57373; font-weight:bold; font-size:13px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
-                スマホの方は下の画像を長押しして「画像を保存」してください
+                📸 スマホの方は、下の画像を長押しして「画像を保存」してください！
             </p>
             <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
         `;
     });
 }
-// ★広告ブロッカー・ポップアップブロックを完全に回避してXに飛ぶ最強の裏技関数
+
+// 
 function postToSNS() {
-    var text = encodeURIComponent("私のHey!Say!JUMP好き曲20選です！\n(※保存した画像を一緒に添付してください)\n\n#JUMP好き曲20選\n");
-    var url = "https://x.com/intent/tweet?text=" + text;
+    // ① Xに投稿する文章
+    var text = encodeURIComponent("私のHey!Say!JUMP楽曲ソート結果です！\n(※保存した画像を一緒に添付してください)\n\n#JUMP楽曲ソート\n");
     
+    // ② ソートツールのURL
+    var siteUrl = encodeURIComponent("https://82131.github.io/jumpsongsort/");
+    
+    // ③ 文章とURLを合体させたX投稿用リンクを作成
+    var url = "https://x.com/intent/tweet?text=" + text + "&url=" + siteUrl;
+    
+    // 
     var a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
