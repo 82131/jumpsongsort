@@ -597,30 +597,26 @@ function showImage() {
 function showResult() {
     showStep("step-result");
     
-    var displayItems = []; // 画面表示用のHTMLを一旦すべてここに貯める
-    var top20Songs = [];   // スプレッドシート送信用のデータ（※最大20個）
+    var displayItems = []; 
+    var top20Songs = [];   
     var ranking = 1, sameRank = 1;
     
-    // 1. 同率も含めて「20位」までの曲をすべて抽出する
     for (var i = 0; i < namMember.length; i++) {
-        if (ranking > 20) break; // 21位になったらストップ
+        if (ranking > 20) break; 
         
         var songName = namMember[lstMember[0][i]];
         
-        // 画面用のアイテムを作成
         var itemStr = `<div class="rank-item">
                            <div class="rank-num">${ranking}</div>
                            <div class="rank-song">${songName}</div>
                        </div>`;
                        
-        displayItems.push(itemStr); // 配列にどんどん追加
+        displayItems.push(itemStr); 
         
-        // フォーム配信用には最初の20曲だけを保存（エラー防止のため）
         if (top20Songs.length < 20) {
             top20Songs.push(songName);
         }
         
-        // 次の順位を計算（引き分けなら順位キープ、勝敗があればスキップした分だけ順位を足す）
         if (i < namMember.length - 1) { 
             if (equal[lstMember[0][i]] == lstMember[0][i + 1]) {
                 sameRank++; 
@@ -631,13 +627,10 @@ function showResult() {
         }
     }
     
-    // 2. 抽出した数を「自動で半分」に割って左右に振り分ける
-    // 例：23曲なら、左に12曲、右に11曲
     var splitIndex = Math.ceil(displayItems.length / 2);
     var leftHTML = displayItems.slice(0, splitIndex).join("");
     var rightHTML = displayItems.slice(splitIndex).join("");
     
-    // 3. 画面に出力
     var str = `<div class="ranking-list">
                    <div class="ranking-col">${leftHTML}</div>
                    <div class="ranking-col">${rightHTML}</div>
@@ -645,9 +638,7 @@ function showResult() {
                
     document.getElementById("resultField").innerHTML = str;
 
-    // 4. スプレッドシート（Googleフォーム）へ送信
     if(isConsentGiven) {
-        // もし曲数が20未満で終わった場合は「データなし」で埋める
         while(top20Songs.length < 20) { top20Songs.push("データなし"); }
         
         var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe2ftmvqTI6eGHKEXG3bUnAmYYXrM5O8ctekXqLbmamZB3uhg/formResponse';
@@ -677,6 +668,48 @@ function showResult() {
         fetch(formUrl, { method: 'POST', mode: 'no-cors', body: formData }).then(response => { console.log('送信完了'); });
     }
 }
+
+// ========== ★画像保存の強化版 ==========
+function downloadImage() {
+    var element = document.getElementById("capture-area");
+    
+    // すでに画像化されている場合の連打防止
+    if(element.querySelector("img")) {
+        alert("すでに画像が作成されています。画像を長押し（または右クリック）して保存してください！");
+        return;
+    }
+
+    // 画像化の処理（スマホでもパンクしないように調整）
+    html2canvas(element, { 
+        scale: 2, 
+        useCORS: true, 
+        backgroundColor: "#ffffff" 
+    }).then(canvas => {
+        var imgData = canvas.toDataURL("image/png");
+        
+        // ① スマホ向け：確実に長押し保存できるように画面を画像に置き換える
+        element.innerHTML = `
+            <p style="color:#e57373; font-weight:bold; font-size:13px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
+                📸 下の画像を長押し（PCは右クリック）して「画像を保存」してください！
+            </p>
+            <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); display:block; margin:0 auto;">
+        `;
+
+        // ② PC向け：自動でダウンロードを試みる
+        try {
+            var link = document.createElement("a"); 
+            link.download = "JUMP_sort_result.png";
+            link.href = imgData; 
+            link.click();
+        } catch(e) {
+            console.log("自動ダウンロード非対応ブラウザ");
+        }
+    }).catch(err => {
+        alert("画像の生成に失敗しました😭 お手数ですが画面のスクリーンショットをお願いします！");
+        console.error(err);
+    });
+}
+// ========================================
 
 function postToSNS() {
     var text = encodeURIComponent("私のHey!Say!JUMP楽曲ソート結果です！\n(※保存した画像を一緒に添付してください)\n\n#JUMP好き曲20選\n");
