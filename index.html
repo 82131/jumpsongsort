@@ -21,7 +21,7 @@
         color: #333;
         background-color: #fafafa;
         margin: 0;
-        padding: 10px; /* スマホ向けに左右の余白を少し狭く */
+        padding: 10px;
     }
     .container {
         max-width: 650px;
@@ -34,21 +34,19 @@
         overflow: hidden;
     }
 
-    /* メンバーカラーのパステルグラデーションバー */
     .member-colors-bar {
         height: 10px;
         background: linear-gradient(to right, #ffd1d1, #ffd1ff, #ffe8d1, #e8d1ff, #d1e8ff, #ffffd1, #e8ffd1, #eeeeee);
         margin: -20px -15px 20px -15px;
     }
     
-    /* 各ステップの表示切り替え用 */
     .step-section { display: none; }
     .step-section.active { display: block; }
     
     h2 { 
         font-size: 16px; 
         background-color: var(--theme-color);
-        color: #5d4037; /* チョコレート色 */
+        color: #5d4037; 
         border: 1px solid #d7ccc8;
         padding: 10px; 
         border-radius: 8px; 
@@ -64,9 +62,8 @@
     }
     .btn:hover { opacity: 0.8; }
     
-    /* ★広告ブロック回避のため名前を btn-sns に変更 */
     .btn-sns { background-color: #81D4FA; }
-    .btn-save { background-color: #FFCC80; }
+    .btn-save { background-color: #FFCC80; font-size: 14px; padding: 8px 15px;}
     .btn-gray { background-color: #e0e0e0; }
 
     .oshi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
@@ -99,7 +96,6 @@
     @media (min-width: 500px) { .category-items { grid-template-columns: repeat(3, 1fr); } }
     .category-items label { cursor: pointer; color: #555; }
 
-    /* 予選用スタイル */
     #prelim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
     .prelim-item {
         border: 2px solid #eee; padding: 12px 8px; border-radius: 8px;
@@ -118,7 +114,6 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
 
-    /* ★本戦用スタイル */
     #battle-container {
         display: grid;
         grid-template-columns: 1fr 50px 1fr; 
@@ -155,7 +150,6 @@
         background: #f9f9f9; font-size: 11px; border-radius: 6px; color:#666; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
     }
 
-    /* ★ランキングスタイル */
     #capture-area { background: #fff; padding: 15px 5px; margin-bottom: 20px; border-radius: 8px; }
     .ranking-list {
         display: grid;
@@ -202,6 +196,10 @@
         word-break: break-word;
         line-height: 1.2;
     }
+    
+    .save-bar {
+        display: flex; justify-content: center; gap: 10px; margin-top: 15px;
+    }
 </style>
 </head>
 <body>
@@ -210,7 +208,7 @@
     <div class="member-colors-bar"></div>
     <h1 style="color: #555; font-size: clamp(16px, 5vw, 22px); word-break: keep-all; margin: 5px 0 15px;">Hey!Say!JUMP楽曲ソート</h1>
     
-    <!-- ==================== ⓪同意と担当選択ステップ ==================== -->
+    <!-- ⓪同意と担当選択ステップ -->
     <div id="step-consent" class="step-section active">
         <p style="font-size: 13px; text-align: left; background: #fdfdfd; border: 1px solid #eee; padding: 12px; border-radius: 8px; line-height: 1.6; color: #444;">
             このツールではランキング結果を集計しています<br>
@@ -234,7 +232,7 @@
         </div>
     </div>
 
-    <!-- ==================== ①リスト選択ステップ ==================== -->
+    <!-- ①リスト選択ステップ -->
     <div id="step-setup" class="step-section">
         <h2>①遊びたいリストを選択してスタート</h2>
         <p style="font-size:12px; color:#e57373; font-weight:bold; margin-bottom:5px;">※リスト間で重複している曲は自動で1つにまとめられます</p>
@@ -247,7 +245,7 @@
         <button class="btn" onclick="startPreliminary()">予選スタート！</button>
     </div>
 
-    <!-- ==================== ②予選ステップ ==================== -->
+    <!-- ②予選ステップ -->
     <div id="step-preliminary" class="step-section">
         <h2>②予選：8曲の中から【最大4曲】を選択</h2>
         <p style="font-size:12px; color:#888; font-weight:bold; margin-bottom:10px;">※選択せずに次に進んでもOK</p>
@@ -264,29 +262,34 @@
             <div class="prelim-item" onclick="togglePrelim(7)" id="p-item-7"></div>
         </div>
         <div style="margin-top: 15px; color: #888; font-size:13px;" id="prelim-progress">予選グループ: 1 / 10</div>
-        <button class="btn btn-gray" onclick="prevPrelim()">＜ 一つ戻る</button>
-        <button class="btn" onclick="nextPrelim()">次へ ＞</button>
+        
+        <div class="save-bar">
+            <button class="btn btn-gray" onclick="prevPrelim()">＜ 一つ戻る</button>
+            <button class="btn" onclick="nextPrelim()">次へ ＞</button>
+        </div>
+        <button class="btn btn-save" onclick="manualSave()">💾 保存して中断</button>
     </div>
 
-    <!-- ==================== ③本戦ステップ ==================== -->
+    <!-- ③本戦ステップ -->
     <div id="step-main" class="step-section">
         <h2>③本戦：より好きな方を選んでください</h2>
         <div id="battleNumber" style="font-size: 13px; color: #888; margin-bottom: 10px;"></div>
         
         <div id="battle-container">
             <div id="leftField" class="battle-btn" onclick="if(finishFlag==0)sortList(-1);"></div>
-            
             <div class="middle-col">
                 <div class="middle-btn" onclick="if(finishFlag==0)sortList(0);">引き分け</div>
             </div>
-            
             <div id="rightField" class="battle-btn" onclick="if(finishFlag==0)sortList(1);"></div>
         </div>
 
-        <button class="btn btn-gray" style="margin-top:15px;" onclick="undoSort()">＜ 一つ戻る</button>
+        <div class="save-bar">
+            <button class="btn btn-gray" onclick="undoSort()">＜ 一つ戻る</button>
+            <button class="btn btn-save" onclick="manualSave()">💾 保存して中断</button>
+        </div>
     </div>
 
-    <!-- ==================== ④結果ステップ ==================== -->
+    <!-- ④結果ステップ -->
     <div id="step-result" class="step-section">
         <div id="capture-area">
             <h2 style="margin-top: 0; letter-spacing: 0px; white-space: nowrap;">Hey!Say!JUMP好き曲20選</h2>
@@ -296,7 +299,7 @@
         <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
             <button class="btn" style="background-color: #FFCC80; width: 100%; max-width: 320px; margin: 0;" onclick="downloadImage()">⬇️ 結果を画像として保存</button>
             <button class="btn" style="background-color: #81D4FA; width: 100%; max-width: 320px; margin: 0;" onclick="postToSNS()">𝕏 画像を添付してポスト</button>
-            <button class="btn btn-gray" style="width: 100%; max-width: 320px; margin: 0;" onclick="location.reload()">最初からやり直す</button>
+            <button class="btn btn-gray" style="width: 100%; max-width: 320px; margin: 0;" onclick="resetAll()">最初からやり直す</button>
         </div>
     </div>
 </div>
@@ -304,21 +307,31 @@
 <script>
 var isConsentGiven = false;
 var selectedOshiName = ""; 
+var currentThemeColor = '#bdbdbd';
+var currentThemeLight = '#f5f5f5';
+var activeStep = 'step-consent';
 
 function selectOshi(mainColor, lightColor, oshiName) {
     isConsentGiven = true; 
     selectedOshiName = oshiName; 
-    document.documentElement.style.setProperty('--theme-color', mainColor);
-    document.documentElement.style.setProperty('--theme-light', lightColor);
+    currentThemeColor = mainColor;
+    currentThemeLight = lightColor;
+    applyTheme();
     showStep('step-setup');
 }
 
 function skipConsent() {
     isConsentGiven = false; 
     selectedOshiName = "未回答";
-    document.documentElement.style.setProperty('--theme-color', '#bdbdbd');
-    document.documentElement.style.setProperty('--theme-light', '#f5f5f5');
+    currentThemeColor = '#bdbdbd';
+    currentThemeLight = '#f5f5f5';
+    applyTheme();
     showStep('step-setup');
+}
+
+function applyTheme() {
+    document.documentElement.style.setProperty('--theme-color', currentThemeColor);
+    document.documentElement.style.setProperty('--theme-light', currentThemeLight);
 }
 
 var namMemberSeries = {};
@@ -336,48 +349,10 @@ var seriesCategories = [
     { name: "ソロ・ユニット", ids: ["18","19","20","21"] }
 ];
 
-namMemberSeries["1"] = [
-    "Ultra Music Power", "Star Time", "Too Shy", "Dreams come true", "俺たちの青春", "Chance to Change", 
-    "Your Seed", "冒険ライダー", "真夜中のシャドーボーイ", "スクール革命", "Deep night 君思う", 
-    "瞳のスクリーン", "輝きデイズ", "Romeo & Juliet", "「ありがとう」～世界のどこにいても～", "FLY", "スノウソング", "二人掛けの場所", 
-    "OVER", "愛ing-アイシテル", "ユー・ガッタ・モール", "Screw", "Born in the EARTH", 
-    "Magic Power", "Beat Line", "眠リノ森", "BE ALIVE", "スクールデイズ", "GET!!"
-];
-namMemberSeries["2"] = [
-    "SUPER DELICATE", "JUMP Around The World!!!", "succeed", "ワンダーランド・トレイン", "ス・リ・ル", 
-    "Come On A My House", "BOUNCE", "New Hope ～こんなに僕らはひとつ", "Just For You", "スクランブル", 
-    "Ride With Me", "Go To The Future", "GIFT", "School Girl", "Hands Up", 
-    "Aino Arika", "愛すればもっとハッピーライフ", "桜、咲いたよ", "OUR FUTURE", "Oh！My Jelly！～僕らはOK～", "スギルセツナ", 
-    "ウィークエンダー", "明日へのYELL", "Through the night", "レインボーキャンディーガール", "スーツデイズ", "ただ前へ", 
-    "Chau＃", "我 I Need You", "スルー", "KAZEKAORU", 
-    "キミアトラクション", "ChikuTaku", "秋、晴れ。僕に風が吹いた。", "Shall We?", "NEW AGE", "Ignition", 
-    "真剣SUNSHINE", "We are 男の子！", "Eve", "パーリーモンスター", "Speed It Up", 
-    "Fantastic Time", "Never Let You Go", "静寂の朝、君といる世界。", "ワンダーロード", "What A Feeling", 
-    "Give Me Love", "Traffic Jam", "TOY", "Baby I Love You", "Glorious", "明日ハレルヤ", 
-    "殺せんせーションズ", "さよならセンセーション"
-];
-namMemberSeries["3"] = [
-    "OVER THE TOP", "Vanilla Ice", "Funky Time", "PARTY!!", "Our days", 
-    "Precious Girl", "Are You There?", "灼熱の夢", "Smile in Summer", "Sweet Liar", "スタートデイズ", 
-    "White Love", "星の降る夜に", "Rock U Baby!", "Good Life", "Spark×2", "Usual Soldier", 
-    "マエヲムケ", "Love Hurricane", "BE MY VALENTINE!", "チョコラタ", "NEW LIFE", "Diggy Down", "Snow Memories", 
-    "COSMIC☆HUMAN", "Go My Way", "SWEET or HOT ?", "ルーレット", "Draw My Life !", "やんちゃなヒーロー", 
-    "Lucky-Unlucky", "Oh! my darling", "Last Dance", "真夜中のシャドーボーイ～SENSE or LOVE Remix", "Entertainment", "バンビーノ", 
-    "愛だけがすべて -What do you want?-","Bloom", 
-    "ファンファーレ！","Mystery O","トレンディーラブ #REIWA","Napa Napa","Go Fighter","波の上で会いましょう", "Summer Romantic", "ファンファーレ！DE 盆踊り", 
-    "I am", "Muah Muah", "クランメリア", "ときめきは嘘じゃない", 
-    "Last Mermaid...", "Love me PLZ", "Stupid", "U", "言葉はいらない", 
-    "Your Song", "あなた想い", "Secret Magic", "hearts color", "BOW WOW SONG", "ヒカリサス", 
-    "ネガティブファイター", "Try & error", "#502", "Letter", "僕らの意味を", 
-    "群青ランナウェイ", "Lovely Dance", "シャッターチャンス", "ドラマチック", "Love Your Life", 
-    "Sing-along", "Break The Wall", "モノローグ", "ハローメロディ", "ASAP!"
-];
-namMemberSeries["4"] = [
-    "a r e a", "恋をするんだ", "春玄鳥", "Happy！Birthdaaaaaaaay", "ウィークエンダー（Torikae Mix）", "TO THE TOP（Torikae Mix）", "僕はVampire（Torikae Mix）", 
-    "DEAR MY LOVER", "ウラオモテ", "エーデルワイス", "VILLAIN", "Sweet Chilli Sauce", "あの日の僕へ", 
-    "UMP", "NERD", "BAD NEWS 見たくない！", "執事的なボーイフレンド", "ハイライト", "ナユタの海", "ルーティーン", 
-    "encore", "SUPER CRUISIN'", "Step by step", "未来線", "ラブレター", "MATSURI☆FEVER", "ハニカミ", "traveler", "赤裸々", "ハートビート", "NEED YOU", "CUE CUE CUTE"
-];
+namMemberSeries["1"] = ["Ultra Music Power", "Star Time", "Too Shy", "Dreams come true", "俺たちの青春", "Chance to Change", "Your Seed", "冒険ライダー", "真夜中のシャドーボーイ", "スクール革命", "Deep night 君思う", "瞳のスクリーン", "輝きデイズ", "Romeo & Juliet", "「ありがとう」～世界のどこにいても～", "FLY", "スノウソング", "二人掛けの場所", "OVER", "愛ing-アイシテル", "ユー・ガッタ・モール", "Screw", "Born in the EARTH", "Magic Power", "Beat Line", "眠リノ森", "BE ALIVE", "スクールデイズ", "GET!!"];
+namMemberSeries["2"] = ["SUPER DELICATE", "JUMP Around The World!!!", "succeed", "ワンダーランド・トレイン", "ス・リ・ル", "Come On A My House", "BOUNCE", "New Hope ～こんなに僕らはひとつ", "Just For You", "スクランブル", "Ride With Me", "Go To The Future", "GIFT", "School Girl", "Hands Up", "Aino Arika", "愛すればもっとハッピーライフ", "桜、咲いたよ", "OUR FUTURE", "Oh！My Jelly！～僕らはOK～", "スギルセツナ", "ウィークエンダー", "明日へのYELL", "Through the night", "レインボーキャンディーガール", "スーツデイズ", "ただ前へ", "Chau＃", "我 I Need You", "スルー", "KAZEKAORU", "キミアトラクション", "ChikuTaku", "秋、晴れ。僕に風が吹いた。", "Shall We?", "NEW AGE", "Ignition", "真剣SUNSHINE", "We are 男の子！", "Eve", "パーリーモンスター", "Speed It Up", "Fantastic Time", "Never Let You Go", "静寂の朝、君といる世界。", "ワンダーロード", "What A Feeling", "Give Me Love", "Traffic Jam", "TOY", "Baby I Love You", "Glorious", "明日ハレルヤ", "殺せんせーションズ", "さよならセンセーション"];
+namMemberSeries["3"] = ["OVER THE TOP", "Vanilla Ice", "Funky Time", "PARTY!!", "Our days", "Precious Girl", "Are You There?", "灼熱の夢", "Smile in Summer", "Sweet Liar", "スタートデイズ", "White Love", "星の降る夜に", "Rock U Baby!", "Good Life", "Spark×2", "Usual Soldier", "マエヲムケ", "Love Hurricane", "BE MY VALENTINE!", "チョコラタ", "NEW LIFE", "Diggy Down", "Snow Memories", "COSMIC☆HUMAN", "Go My Way", "SWEET or HOT ?", "ルーレット", "Draw My Life !", "やんちゃなヒーロー", "Lucky-Unlucky", "Oh! my darling", "Last Dance", "真夜中のシャドーボーイ～SENSE or LOVE Remix", "Entertainment", "バンビーノ", "愛だけがすべて -What do you want?-","Bloom", "ファンファーレ！","Mystery O","トレンディーラブ #REIWA","Napa Napa","Go Fighter","波の上で会いましょう", "Summer Romantic", "ファンファーレ！DE 盆踊り", "I am", "Muah Muah", "クランメリア", "ときめきは嘘じゃない", "Last Mermaid...", "Love me PLZ", "Stupid", "U", "言葉はいらない", "Your Song", "あなた想い", "Secret Magic", "hearts color", "BOW WOW SONG", "ヒカリサス", "ネガティブファイター", "Try & error", "#502", "Letter", "僕らの意味を", "群青ランナウェイ", "Lovely Dance", "シャッターチャンス", "ドラマチック", "Love Your Life", "Sing-along", "Break The Wall", "モノローグ", "ハローメロディ", "ASAP!"];
+namMemberSeries["4"] = ["a r e a", "恋をするんだ", "春玄鳥", "Happy！Birthdaaaaaaaay", "ウィークエンダー（Torikae Mix）", "TO THE TOP（Torikae Mix）", "僕はVampire（Torikae Mix）", "DEAR MY LOVER", "ウラオモテ", "エーデルワイス", "VILLAIN", "Sweet Chilli Sauce", "あの日の僕へ", "UMP", "NERD", "BAD NEWS 見たくない！", "執事的なボーイフレンド", "ハイライト", "ナユタの海", "ルーティーン", "encore", "SUPER CRUISIN'", "Step by step", "未来線", "ラブレター", "MATSURI☆FEVER", "ハニカミ", "traveler", "赤裸々", "ハートビート", "NEED YOU", "CUE CUE CUTE"];
 namMemberSeries["5"] = ["DREAMER", "INFINITY", "瞳のスクリーン", "真紅", "ガンバレッツゴー！", "情熱JUMP", "すまいるそんぐ", "Memories", "Dreams come true", "Time", "Score", "アイ☆スクリーム", "Your Seed", "真夜中のシャドーボーイ", "Dash!!", "Ultra Music Power", "Thank You ～僕たちから君へ～"];
 namMemberSeries["6"] = ["パーフェクト ライフ", "SUPER DELICATE", "つなぐ手と手", "僕はVampire","OVER", "Hero", "Magic Power", "Hurry up!", "サム＆ピンキー", "「ありがとう」～世界のどこにいても～", "Together forever", "スパイシー", "花えがお", "スナップ", "ウタウタウ", "Endless Dream"];
 namMemberSeries["7"] = ["～Prelude of smart～（smart）", "FOREVER", "Ready Go", "Come On A My House", "切なさ、ひきかえに", "Candle", "パステル", "ゆーと叩いてみた。", "コンパスローズ", "Come Back…?", "RELOAD", "はじまりのメロディ", "Aino Arika", "My World", "ともだちだよ", "Yes!", "Super Super Night", "Oh!アイドル!", "Ride With Me"];
@@ -401,6 +376,76 @@ var selectedInBlock = [], survivingSongs = [];
 var blockSelections = []; 
 const MIN_REQUIRED_SONGS = 8;
 
+// ========== セーブ＆ロード機能 ==========
+function saveState() {
+    var state = {
+        activeStep: activeStep,
+        isConsentGiven: isConsentGiven,
+        selectedOshiName: selectedOshiName,
+        currentThemeColor: currentThemeColor,
+        currentThemeLight: currentThemeLight,
+        // 予選データ
+        candidateSongs: candidateSongs,
+        prelimBlocks: prelimBlocks,
+        currentBlockIdx: currentBlockIdx,
+        blockSelections: blockSelections,
+        survivingSongs: survivingSongs,
+        // 本戦データ
+        namMember: namMember, lstMember: lstMember, parent: parent,
+        equal: equal, rec: rec, cmp1: cmp1, cmp2: cmp2,
+        head1: head1, head2: head2, nrec: nrec, numQuestion: numQuestion,
+        totalSize: totalSize, finishSize: finishSize, finishFlag: finishFlag,
+        sortHistory: sortHistory
+    };
+    localStorage.setItem('JUMPSortSaveData', JSON.stringify(state));
+}
+
+function loadState() {
+    var saved = localStorage.getItem('JUMPSortSaveData');
+    if (saved) {
+        if(confirm("前回保存された続きから再開しますか？\n※「キャンセル」を押すと最初からになります")) {
+            var state = JSON.parse(saved);
+            isConsentGiven = state.isConsentGiven;
+            selectedOshiName = state.selectedOshiName;
+            currentThemeColor = state.currentThemeColor;
+            currentThemeLight = state.currentThemeLight;
+            candidateSongs = state.candidateSongs;
+            prelimBlocks = state.prelimBlocks;
+            currentBlockIdx = state.currentBlockIdx;
+            blockSelections = state.blockSelections;
+            survivingSongs = state.survivingSongs;
+            namMember = state.namMember; lstMember = state.lstMember; parent = state.parent;
+            equal = state.equal; rec = state.rec; cmp1 = state.cmp1; cmp2 = state.cmp2;
+            head1 = state.head1; head2 = state.head2; nrec = state.nrec; numQuestion = state.numQuestion;
+            totalSize = state.totalSize; finishSize = state.finishSize; finishFlag = state.finishFlag;
+            sortHistory = state.sortHistory || [];
+            
+            applyTheme();
+            showStep(state.activeStep);
+            
+            if(state.activeStep === 'step-preliminary') renderPrelimBlock();
+            if(state.activeStep === 'step-main') showImage();
+            return true;
+        } else {
+            localStorage.removeItem('JUMPSortSaveData');
+        }
+    }
+    return false;
+}
+
+function manualSave() {
+    saveState();
+    alert("進行状況を保存しました！\n次回このページを開いた際に続きから再開できます。");
+}
+
+function resetAll() {
+    if(confirm("進行状況をすべてリセットして最初からやり直しますか？")) {
+        localStorage.removeItem('JUMPSortSaveData');
+        location.reload();
+    }
+}
+// ========================================
+
 window.onload = function() {
     var cbHTML = "";
     for (var c = 0; c < seriesCategories.length; c++) {
@@ -416,12 +461,17 @@ window.onload = function() {
         cbHTML += `</div></div>`;
     }
     document.getElementById("series-checkboxes").innerHTML = cbHTML;
+    
+    // ページ読み込み時にロード確認
+    loadState();
 };
 
 function showStep(stepId) {
+    activeStep = stepId;
     var steps = document.querySelectorAll('.step-section');
     steps.forEach(s => s.classList.remove('active'));
     document.getElementById(stepId).classList.add('active');
+    if(stepId !== 'step-consent' && stepId !== 'step-result') saveState(); // 自動保存
 }
 
 Array.prototype.shuffle = function() {
@@ -442,11 +492,8 @@ function selectAllMain() {
     var checkboxes = document.getElementsByName("s1");
     for (var i = 0; i < checkboxes.length; i++) {
         var val = parseInt(checkboxes[i].value);
-        if (val >= 1 && val <= 17) {
-            checkboxes[i].checked = true; 
-        } else {
-            checkboxes[i].checked = false; 
-        }
+        if (val >= 1 && val <= 17) { checkboxes[i].checked = true; } 
+        else { checkboxes[i].checked = false; }
     }
 }
 
@@ -470,6 +517,7 @@ function togglePrelim(index) {
     if(idxPos !== -1) { selectedInBlock.splice(idxPos, 1); el.classList.remove("selected"); } 
     else { if(selectedInBlock.length >= 4) { alert("選べるのは4曲までです！"); return; } selectedInBlock.push(index); el.classList.add("selected"); }
     updatePrelimCounter();
+    saveState(); // 操作ごとに保存
 }
 
 function updatePrelimCounter() {
@@ -480,7 +528,7 @@ function updatePrelimCounter() {
 
 function nextPrelim() {
     currentBlockIdx++;
-    if(currentBlockIdx < prelimBlocks.length) { renderPrelimBlock(); } 
+    if(currentBlockIdx < prelimBlocks.length) { renderPrelimBlock(); saveState(); } 
     else { 
         survivingSongs = [];
         for(let b=0; b<prelimBlocks.length; b++) {
@@ -494,7 +542,7 @@ function nextPrelim() {
 }
 
 function prevPrelim() {
-    if (currentBlockIdx > 0) { currentBlockIdx--; renderPrelimBlock(); }
+    if (currentBlockIdx > 0) { currentBlockIdx--; renderPrelimBlock(); saveState(); }
 }
 
 var namMember = [], lstMember = [], parent = [], equal = [], rec = [];
@@ -525,7 +573,8 @@ function sortList(flag){
     if (parent[cmp1] == 0 && nrec >= 20) { for (i = 0; i < nrec; i++) lstMember[0][i] = rec[i]; cmp1 = -1; finishSize = totalSize; }
     if (cmp1 >= 0) { if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) { while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; } } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) { while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; } } if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) { for (i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) lstMember[parent[cmp1]][i] = rec[i]; lstMember.pop(); lstMember.pop(); cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0; if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) rec[i] = 0; nrec = 0; } } }
     
-    if (cmp1<0) { showResult(); finishFlag = 1; } else { showImage(); }
+    if (cmp1<0) { showResult(); finishFlag = 1; localStorage.removeItem('JUMPSortSaveData'); } // 終了時はセーブ削除
+    else { showImage(); saveState(); } // 毎ターン自動保存
 }
 
 function undoSort() {
@@ -535,6 +584,7 @@ function undoSort() {
     cmp1 = state.cmp1; cmp2 = state.cmp2; head1 = state.head1; head2 = state.head2;
     nrec = state.nrec; numQuestion = state.numQuestion; finishSize = state.finishSize; finishFlag = state.finishFlag;
     showImage();
+    saveState();
 }
 
 function showImage() {
@@ -544,39 +594,50 @@ function showImage() {
     numQuestion++;
 }
 
-// ★ランキングを「左列(1〜10位)」「右列(11〜20位)」に分割して表示する
 function showResult() {
     showStep("step-result");
     
-    var leftHTML = "";
-    var rightHTML = "";
-    var top20Songs = []; // ★TOP20まで取得するように変更
+    var displayItems = []; // 画面表示用のHTMLを一旦すべてここに貯める
+    var top20Songs = [];   // スプレッドシート送信用のデータ（※最大20個）
     var ranking = 1, sameRank = 1;
     
+    // 1. 同率も含めて「20位」までの曲をすべて抽出する
     for (var i = 0; i < namMember.length; i++) {
-        if (ranking > 20) break;
+        if (ranking > 20) break; // 21位になったらストップ
+        
         var songName = namMember[lstMember[0][i]];
         
+        // 画面用のアイテムを作成
         var itemStr = `<div class="rank-item">
                            <div class="rank-num">${ranking}</div>
                            <div class="rank-song">${songName}</div>
                        </div>`;
                        
-        if (ranking <= 10) {
-            leftHTML += itemStr;
-        } else {
-            rightHTML += itemStr;
-        }
-                
-        // ★20位までを配列に格納
-        if (top20Songs.length < 20) { top20Songs.push(songName); }
+        displayItems.push(itemStr); // 配列にどんどん追加
         
+        // フォーム配信用には最初の20曲だけを保存（エラー防止のため）
+        if (top20Songs.length < 20) {
+            top20Songs.push(songName);
+        }
+        
+        // 次の順位を計算（引き分けなら順位キープ、勝敗があればスキップした分だけ順位を足す）
         if (i < namMember.length - 1) { 
-            if (equal[lstMember[0][i]] == lstMember[0][i + 1]) sameRank++; 
-            else { ranking += sameRank; sameRank = 1; } 
+            if (equal[lstMember[0][i]] == lstMember[0][i + 1]) {
+                sameRank++; 
+            } else { 
+                ranking += sameRank; 
+                sameRank = 1; 
+            } 
         }
     }
     
+    // 2. 抽出した数を「自動で半分」に割って左右に振り分ける
+    // 例：23曲なら、左に12曲、右に11曲
+    var splitIndex = Math.ceil(displayItems.length / 2);
+    var leftHTML = displayItems.slice(0, splitIndex).join("");
+    var rightHTML = displayItems.slice(splitIndex).join("");
+    
+    // 3. 画面に出力
     var str = `<div class="ranking-list">
                    <div class="ranking-col">${leftHTML}</div>
                    <div class="ranking-col">${rightHTML}</div>
@@ -584,9 +645,11 @@ function showResult() {
                
     document.getElementById("resultField").innerHTML = str;
 
-    // ★Googleフォーム送信部分をTOP20対応に拡張
+    // 4. スプレッドシート（Googleフォーム）へ送信
     if(isConsentGiven) {
+        // もし曲数が20未満で終わった場合は「データなし」で埋める
         while(top20Songs.length < 20) { top20Songs.push("データなし"); }
+        
         var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe2ftmvqTI6eGHKEXG3bUnAmYYXrM5O8ctekXqLbmamZB3uhg/formResponse';
         var formData = new FormData();
         formData.append('entry.1121843297', top20Songs[0]); 
@@ -615,27 +678,7 @@ function showResult() {
     }
 }
 
-function downloadImage() {
-    var element = document.getElementById("capture-area");
-    html2canvas(element, { scale: 2 }).then(canvas => {
-        var imgData = canvas.toDataURL("image/png");
-        
-        var link = document.createElement("a"); 
-        link.download = "JUMP_sort_result.png";
-        link.href = imgData; 
-        link.click();
-        
-        document.getElementById("capture-area").innerHTML = `
-            <p style="color:#e57373; font-weight:bold; font-size:13px; padding:10px; background:#ffebee; border-radius:5px; margin-bottom:15px;">
-                スマホの方は、下の画像を長押しして「画像を保存」してください！
-            </p>
-            <img src="${imgData}" style="width:100%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
-        `;
-    });
-}
-
 function postToSNS() {
-    // ★ハッシュタグを #JUMP好き曲20選 に変更
     var text = encodeURIComponent("私のHey!Say!JUMP楽曲ソート結果です！\n(※保存した画像を一緒に添付してください)\n\n#JUMP好き曲20選\n");
     var siteUrl = encodeURIComponent("https://82131.github.io/jumpsongsort/");
     var url = "https://x.com/intent/tweet?text=" + text + "&url=" + siteUrl;
