@@ -103,7 +103,7 @@
         border-radius: 0 4px 4px 0;
     }
 
-    /* キャプチャ対象となるエリア（白背景・余白設定） */
+    /* キャプチャ対象エリア */
     .capture-area {
         background: #fff;
         padding: 10px;
@@ -317,10 +317,10 @@
     <div class="site-notice">
         当サイトは非公式のファンサイトによる集計結果です。<br>
         あくまでも楽曲ソートのちょっとしたお楽しみとしてご覧ください。<br>
-        <span style="color: #e5004f; font-weight: bold;">※データはほぼリアルタイムで反映されます（参照回答数：<span id="response-count">---</span>件）</span>
+        <span style="color: #e5004f; font-weight: bold;">※データは定期更新されます（参照回答数：<span id="response-count">---</span>件）</span>
     </div>
 
-    <!-- ================= 画像①：総合＋成分表 ================= -->
+    <!-- 画像①：総合＋成分表 -->
     <div class="section-header">
         <h2>総合ポイント＆担当割合</h2>
         <button class="btn-capture" onclick="captureImage('capture_1', 'JUMPソート_総合結果')">📷 画像保存</button>
@@ -347,8 +347,7 @@
         </div>
     </div>
 
-
-    <!-- ================= 画像②：担当別ポイント ================= -->
+    <!-- 画像②：担当別ポイント -->
     <div class="section-header">
         <h2>担当別ポイントランキング</h2>
         <button class="btn-capture" onclick="captureImage('capture_2', 'JUMPソート_担当別')">📷 画像保存</button>
@@ -368,8 +367,7 @@
         </div>
     </div>
 
-
-    <!-- ================= 画像③：1位指名ランキング ================= -->
+    <!-- 画像③：1位指名ランキング -->
     <div class="section-header">
         <h2>1位指名ランキング</h2>
         <button class="btn-capture" onclick="captureImage('capture_3', 'JUMPソート_1位指名')">📷 画像保存</button>
@@ -394,8 +392,7 @@
         </div>
     </div>
 
-
-    <!-- ================= 画像④：カップリング・マイナー曲 ================= -->
+    <!-- 画像④：カップリング・マイナー曲 -->
     <div class="section-header">
         <h2>カップリング・マイナー曲 TOP20</h2>
         <button class="btn-capture" onclick="captureImage('capture_4', 'JUMPソート_マイナー曲')">📷 画像保存</button>
@@ -418,7 +415,6 @@ function captureImage(targetId, fileName) {
     var targetArea = document.getElementById(targetId);
     if (!targetArea) return;
     
-    // 背景色が透明にならないように白(#fff)を指定
     html2canvas(targetArea, { backgroundColor: '#ffffff', scale: 2 }).then(canvas => {
         var a = document.createElement('a');
         a.href = canvas.toDataURL('image/png');
@@ -428,12 +424,12 @@ function captureImage(targetId, fileName) {
 }
 
 // ==========================================
-// CSV URL & メンバー設定
+// CSV URL & メンバー設定（軽量化版URL）
 // ==========================================
-const csvUrl_1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=1123614609&single=true&output=csv';
-const csvUrl_2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=113327742&single=true&output=csv';
-const csvUrl_3 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=783565809&single=true&output=csv';
-const csvUrl_4 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=573280109&single=true&output=csv';
+const csvUrl_1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=707936997&single=true&output=csv';
+const csvUrl_2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=1446010304&single=true&output=csv';
+const csvUrl_3 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=964409383&single=true&output=csv';
+const csvUrl_4 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=282733604&single=true&output=csv';
 
 const members = [
     { id: 'yamada',  name: '❤️ 山田担',  colIdx: 2,  p1SongCol: 2, p1RatioCol: 3,  bg: '#ffd1d1', light: '#fff5f5', text: '#d32f2f', barBg: '#ff4d4d' },
@@ -450,7 +446,6 @@ function cleanStr(str) {
     return str.replace(/\r/g, '').replace(/"/g, '').trim();
 }
 
-// 不正文字除外フィルター
 function isInvalidSong(songName) {
     if (!songName) return true;
     if (songName === '' || songName === 'データなし' || songName === '非選択') return true;
@@ -481,7 +476,7 @@ function parseVal(val) {
 }
 
 // ==========================================
-// ① & ② 集計用シートの処理 (ポイント列は出力しない)
+// ① & ② 集計用シートの処理
 // ==========================================
 fetch(csvUrl_1)
   .then(response => response.text())
@@ -549,7 +544,7 @@ fetch(csvUrl_1)
   .catch(error => console.error('エラー(集計用):', error));
 
 // ==========================================
-// ③ 1位指名集計シートの処理 (比率あり)
+// ③ 1位指名集計シートの処理
 // ==========================================
 fetch(csvUrl_2)
   .then(response => response.text())
@@ -660,7 +655,7 @@ fetch(csvUrl_3)
   .catch(error => console.error('エラー(成分分析):', error));
 
 // ==========================================
-// ⑤ マイナー曲の処理 (ポイント列は出力しない)
+// ⑤ マイナー曲の処理
 // ==========================================
 fetch(csvUrl_4)
   .then(response => response.text())
