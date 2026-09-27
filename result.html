@@ -11,7 +11,6 @@
         --theme-light: #f5f5f5;
     }
 
-    /* 全体のスタイル（ソート本体と完全同一） */
     body {
         font-family: 'メイリオ', sans-serif;
         text-align: center;
@@ -32,7 +31,6 @@
         overflow: hidden;
     }
 
-    /* 上部のメンバーカラーグラデーションバー */
     .member-colors-bar {
         height: 10px;
         background: linear-gradient(to right, #ffd1d1, #ffd1ff, #ffe8d1, #e8d1ff, #d1e8ff, #ffffd1, #e8ffd1, #eeeeee);
@@ -46,7 +44,6 @@
         margin: 5px 0 10px;
     }
 
-    /* サイトトップの注意書き */
     .site-notice {
         font-size: 12px;
         text-align: left;
@@ -59,19 +56,19 @@
         margin-bottom: 25px;
     }
 
-    /* 各ランキングの見出し */
+    /* h2の見出し：グレー背景と枠線を排除し、下線のみに変更 */
     h2 { 
-        font-size: 15px; 
-        background-color: var(--theme-color);
+        font-size: 16px; 
         color: #5d4037; 
-        border: 1px solid #d7ccc8;
-        padding: 8px 12px; 
-        border-radius: 8px; 
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid var(--theme-color);
+        padding: 6px 0; 
         margin-top: 35px;
-        margin-bottom: 8px; 
+        margin-bottom: 12px; 
+        text-align: center;
     }
 
-    /* 集計ルール注記ボックス */
     .rule-note {
         font-size: 11px;
         color: #777;
@@ -83,7 +80,6 @@
         border-radius: 0 4px 4px 0;
     }
 
-    /* 総合ランキング用（中央寄せ幅） */
     .overall-container {
         max-width: 600px;
         margin: 0 auto;
@@ -144,7 +140,6 @@
         flex-shrink: 0;
     }
 
-    /* --- 担当別グリッドレイアウト --- */
     .member-grid-4 {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -229,7 +224,6 @@
         flex-shrink: 0;
     }
 
-    /* --- 100%積み上げ横棒グラフ用スタイル --- */
     .legend-container {
         display: flex;
         flex-wrap: wrap;
@@ -313,8 +307,8 @@
         <span style="color: #e5004f; font-weight: bold;">※データはほぼリアルタイムで反映されます（参照回答数：<span id="response-count">---</span>件）</span>
     </div>
 
-    <!-- ① 総合ポイントランキング -->
-    <h2>① 総合ポイントランキング</h2>
+    <!-- 総合ポイントランキング -->
+    <h2>総合ポイントランキング</h2>
     <div class="rule-note">
         💡 <strong>集計ルール：</strong> 順位に応じてポイントを付与し、総合点で算出
     </div>
@@ -322,8 +316,8 @@
         <div id="table_1" class="ranking-list"><div class="status-msg">データを読み込み中...</div></div>
     </div>
 
-    <!-- ② 担当別ポイントランキング -->
-    <h2>② 担当別ポイントランキング</h2>
+    <!-- 担当別ポイントランキング -->
+    <h2>担当別ポイントランキング</h2>
     <div class="member-grid-4">
         <div class="member-card" id="card-yamada"><div class="status-msg">読み込み中...</div></div>
         <div class="member-card" id="card-chinen"><div class="status-msg">読み込み中...</div></div>
@@ -336,8 +330,8 @@
         <div class="member-card" id="card-yabu"><div class="status-msg">読み込み中...</div></div>
     </div>
 
-    <!-- ③ 1位指名（率）ランキング -->
-    <h2>③ 1位指名（率）ランキング</h2>
+    <!-- 1位指名（率）ランキング -->
+    <h2>1位指名（率）ランキング</h2>
     <div class="rule-note">
         💡 <strong>集計ルール：</strong> 各ユーザーが1位に指名した楽曲の割合（%）を集計
     </div>
@@ -357,13 +351,12 @@
         <div class="member-card" id="card-p1-yabu"><div class="status-msg">読み込み中...</div></div>
     </div>
 
-    <!-- ④ 総合ランク曲の担当割合成分表 -->
-    <h2>④ 総合ランク曲の担当割合（成分表）</h2>
+    <!-- 総合ランク曲の担当割合成分表 -->
+    <h2>総合ランク曲の担当割合（成分表）</h2>
     <div class="rule-note">
         💡 <strong>集計ルール：</strong> 総合ランク上位曲に対する各担当の支持割合（%）を表示（※ファン母数は非公開）
     </div>
     
-    <!-- メンカラ凡例 -->
     <div class="legend-container">
         <div class="legend-item"><div class="legend-color" style="background:#ff4d4d;"></div>山田</div>
         <div class="legend-item"><div class="legend-color" style="background:#ff80df;"></div>知念</div>
@@ -378,8 +371,8 @@
         <div id="bar_chart_container"><div class="status-msg">データを読み込み中...</div></div>
     </div>
 
-    <!-- ⑤ カップリング・マイナー曲 TOP20 -->
-    <h2>⑤ カップリング・マイナー曲 TOP20</h2>
+    <!-- カップリング・マイナー曲 TOP20 -->
+    <h2>カップリング・マイナー曲 TOP20</h2>
     <div class="rule-note">
         💡 <strong>集計ルール：</strong> 表題曲以外の隠れた人気曲・カップリング曲のポイント集計
     </div>
@@ -396,7 +389,7 @@
 const csvUrl_1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=1123614609&single=true&output=csv';
 const csvUrl_2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=113327742&single=true&output=csv';
 const csvUrl_3 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=783565809&single=true&output=csv';
-const csvUrl_4 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=113327742&single=true&output=csv';
+const csvUrl_4 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbQqJ3wbtQiiBtysd9vh9_ee3D-iBvkNpcHg8vwaY3_MsAldoAesUnWVRFR7_8iFVbBVeTG7MGw-Q3/pub?gid=573280109&single=true&output=csv';
 
 const members = [
     { id: 'yamada',  name: '❤️ 山田担',  colIdx: 2,  p1SongCol: 2, p1RatioCol: 3,  bg: '#ffd1d1', light: '#fff5f5', text: '#d32f2f', barBg: '#ff4d4d' },
@@ -408,9 +401,23 @@ const members = [
     { id: 'yabu',    name: '💚 薮担',   colIdx: 14, p1SongCol: 14, p1RatioCol: 15, bg: '#e8ffd1', light: '#f8fff5', text: '#2e7d32', barBg: '#5cd65c' }
 ];
 
+function cleanStr(str) {
+    if (!str) return '';
+    return str.replace(/\r/g, '').replace(/"/g, '').trim();
+}
+
+// 不正な文字列（スクリプト、ヘッダー、エラー文字列等）を除外する判定関数
+function isInvalidSong(songName) {
+    if (!songName) return true;
+    if (songName === '' || songName === 'データなし' || songName === '非選択') return true;
+    if (songName.includes('曲名') || songName.includes('総合曲名')) return true;
+    if (songName.includes('object==') || songName.includes('typeof') || songName.includes('window') || songName.includes('self')) return true;
+    if (songName.length > 50) return true;
+    return false;
+}
+
 function formatRatio(val) {
-    if (!val) return '';
-    val = val.replace(/"/g, '').trim();
+    val = cleanStr(val);
     if (val === '' || val === 'データなし') return '';
     if (val.includes('%')) return val;
     let num = parseFloat(val);
@@ -422,8 +429,7 @@ function formatRatio(val) {
 }
 
 function parseVal(val) {
-    if (!val) return 0;
-    val = val.replace(/"/g, '').replace('%', '').trim();
+    val = cleanStr(val).replace('%', '');
     let num = parseFloat(val);
     if (isNaN(num)) return 0;
     if (num <= 1 && num > 0) return num * 100;
@@ -436,19 +442,19 @@ function parseVal(val) {
 fetch(csvUrl_1)
   .then(response => response.text())
   .then(csvText => {
-    const rows = csvText.split('\n');
+    const rows = csvText.replace(/\r/g, '').split('\n');
 
     let responseCount = "集計中";
     for(let r=0; r<rows.length; r++) {
         const cols = rows[r].split(',');
-        if(cols.length > 16 && cols[16].trim() !== '') {
-            const val = cols[16].replace(/"/g, '').trim();
+        if(cols.length > 16) {
+            const val = cleanStr(cols[16]);
             if(!isNaN(val) && val !== '') { responseCount = val; break; }
         }
     }
     document.querySelector('#response-count').innerText = responseCount;
 
-    // ① 総合ポイントランキング
+    // 総合ポイントランキング
     const container1 = document.querySelector('#table_1');
     let html1 = '';
     let rank1 = 1;
@@ -458,9 +464,9 @@ fetch(csvUrl_1)
       if (!rows[i]) continue;
       
       const columns = rows[i].split(',');
-      const songName = columns[0] ? columns[0].replace(/"/g, '').trim() : '';
+      const songName = cleanStr(columns[0]);
 
-      if (songName === '' || songName === 'データなし' || songName === '非選択' || songName === '曲名' || songName === '総合曲名') continue;
+      if (isInvalidSong(songName)) continue;
 
       html1 += '<div class="rank-item">';
       html1 += '  <div class="rank-num">' + rank1 + '</div>';
@@ -471,7 +477,7 @@ fetch(csvUrl_1)
     }
     container1.innerHTML = html1 !== '' ? html1 : '<div class="status-msg">データなし</div>';
 
-    // ② 担当別ポイントランキング
+    // 担当別ポイントランキング
     members.forEach(m => {
         const card = document.querySelector(`#card-${m.id}`);
         let cardHTML = `<div class="member-card-header" style="background-color: ${m.bg}; color: ${m.text};">${m.name}</div>`;
@@ -482,9 +488,9 @@ fetch(csvUrl_1)
             if (!rows[i]) continue;
 
             const columns = rows[i].split(',');
-            const songName = columns[m.colIdx] ? columns[m.colIdx].replace(/"/g, '').trim() : '';
+            const songName = cleanStr(columns[m.colIdx]);
 
-            if (songName === '' || songName === 'データなし' || songName === '非選択' || songName.includes('曲名')) continue;
+            if (isInvalidSong(songName)) continue;
 
             cardHTML += `<div class="member-rank-item" style="border-color: ${m.bg}; background-color: #fff;">`;
             cardHTML += `  <div class="member-rank-num" style="background-color: ${m.light}; border: 1px solid ${m.bg}; color: ${m.text};">${mRank}</div>`;
@@ -505,7 +511,7 @@ fetch(csvUrl_1)
 fetch(csvUrl_2)
   .then(response => response.text())
   .then(csvText => {
-    const rows = csvText.split('\n');
+    const rows = csvText.replace(/\r/g, '').split('\n');
 
     const container3 = document.querySelector('#table_3_overall');
     let html3 = '';
@@ -516,10 +522,10 @@ fetch(csvUrl_2)
         if (!rows[i]) continue;
 
         const columns = rows[i].split(',');
-        const songName = columns[0] ? columns[0].replace(/"/g, '').trim() : '';
-        const ratio = columns[1] ? formatRatio(columns[1]) : '';
+        const songName = cleanStr(columns[0]);
+        const ratio = formatRatio(columns[1]);
 
-        if (songName === '' || songName === 'データなし' || songName === '非選択' || songName.includes('曲名')) continue;
+        if (isInvalidSong(songName)) continue;
 
         html3 += '<div class="rank-item">';
         html3 += '  <div class="rank-num">' + rank3 + '</div>';
@@ -541,10 +547,10 @@ fetch(csvUrl_2)
             if (!rows[i]) continue;
 
             const columns = rows[i].split(',');
-            const songName = columns[m.p1SongCol] ? columns[m.p1SongCol].replace(/"/g, '').trim() : '';
-            const ratio = columns[m.p1RatioCol] ? formatRatio(columns[m.p1RatioCol]) : '';
+            const songName = cleanStr(columns[m.p1SongCol]);
+            const ratio = formatRatio(columns[m.p1RatioCol]);
 
-            if (songName === '' || songName === 'データなし' || songName === '非選択' || songName.includes('曲名')) continue;
+            if (isInvalidSong(songName)) continue;
 
             cardHTML += `<div class="member-rank-item" style="border-color: ${m.bg}; background-color: #fff;">`;
             cardHTML += `  <div class="member-rank-num" style="background-color: ${m.light}; border: 1px solid ${m.bg}; color: ${m.text};">${mRank}</div>`;
@@ -566,7 +572,7 @@ fetch(csvUrl_2)
 fetch(csvUrl_3)
   .then(response => response.text())
   .then(csvText => {
-    const rows = csvText.split('\n');
+    const rows = csvText.replace(/\r/g, '').split('\n');
     const container = document.querySelector('#bar_chart_container');
     let html = '';
     let rank = 1;
@@ -576,11 +582,10 @@ fetch(csvUrl_3)
         if (!rows[i]) continue;
 
         const cols = rows[i].split(',');
-        const songName = cols[0] ? cols[0].replace(/"/g, '').trim() : '';
+        const songName = cleanStr(cols[0]);
 
-        if (songName === '' || songName === 'データなし' || songName === '非選択' || songName.includes('曲名')) continue;
+        if (isInvalidSong(songName)) continue;
 
-        // 各メンバーの割合を配列化
         let values = [];
         let total = 0;
         for (let c = 1; c <= 7; c++) {
@@ -617,7 +622,7 @@ fetch(csvUrl_3)
 fetch(csvUrl_4)
   .then(response => response.text())
   .then(csvText => {
-    const rows = csvText.split('\n');
+    const rows = csvText.replace(/\r/g, '').split('\n');
     const container = document.querySelector('#table_minor');
     let html = '';
     let rank = 1;
@@ -627,9 +632,9 @@ fetch(csvUrl_4)
       if (!rows[i]) continue;
       
       const columns = rows[i].split(',');
-      const songName = columns[0] ? columns[0].replace(/"/g, '').trim() : '';
+      const songName = cleanStr(columns[0]);
 
-      if (songName === '' || songName === 'データなし' || songName === '非選択' || songName === '曲名' || songName.includes('曲名')) continue;
+      if (isInvalidSong(songName)) continue;
 
       html += '<div class="rank-item">';
       html += '  <div class="rank-num">' + rank + '</div>';
